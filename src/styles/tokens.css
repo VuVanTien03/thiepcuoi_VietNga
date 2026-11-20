@@ -1,0 +1,56 @@
+:root {
+  /* Soft Gentle Green Palette ("Tông xanh lá nhẹ nhàng") */
+  --sage-primary: #7B9A74;
+  --sage-deep: #5C7B56;
+  --sage-soft: #96B28F;
+  --sage-pastel: #DCEAD7;
+  --sage-tint: #EEF5EC;
+  --sage-leaf-gold: #7E9964;
+
+  /* Soft Blush Pink Accents (hài hòa tông xanh lá nhẹ nhàng) */
+  --blush-heart: #E58C9C;
+  --blush-deep: #CE6E80;
+  --blush-soft: #F4B9C4;
+  --blush-tint: #FDF0F3;
+
+  /* Surfaces & Ink */
+  --paper-white: #FFFFFF;
+  --paper-ivory: #FAFDF9;
+  --paper-tint: #F4F8F2;
+  --film-charcoal: #1E2B20;
+  --countdown-tile: #141E15;
+  --ink-forest: #243025;
+  --ink-body: #344235;
+  --ink-muted: #5C6E5D;
+  --ink-faint: #8C9B8D;
+  --line-subtle: #E4ECE2;
+
+  /* Envelope Pastel Green Palette */
+  --env-back: #A7C1A1;
+  --env-flap: #BAD0B4;
+  --env-side: #CFE0C9;
+  --env-bottom: #E3EEE0;
+  --wax-seal: #76926F;
+
+  /* Feed Layout Shell */
+  --feed-ink: #1C261D;
+  --feed-muted: #647365;
+  --feed-faint: #98A699;
+  --feed-line: #E7EEE6;
+  --feed-soft: #F1F6EF;
+  --feed-soft-hover: #E3EDE0;
+  --feed-brand: #6B8E67;
+  --feed-brand-soft: #EEF5EC;
+
+  /* Typography */
+  --font-editorial-sans: 'Quicksand', 'Be Vietnam Pro', sans-serif;
+  --font-display-serif: 'Lora', 'Playfair Display', Georgia, serif;
+  --font-script-title: 'Alex Brush', 'Great Vibes', 'Dancing Script', cursive;
+  --font-script-vi: 'Dancing Script', 'Lora', cursive;
+  --font-body: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 12px 34px -16px rgba(36, 48, 37, 0.16);
+  --shadow-feed: 0 0 0 1px rgba(36, 48, 37, 0.06), 0 12px 36px rgba(36, 48, 37, 0.11);
+}

@@ -1,0 +1,10 @@
+services:
+  thiep-cuoi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: thiep-cuoi-xanhla:latest
+    container_name: thiep-cuoi-xanhla
+    ports:
+      - "8080:80"
+    restart: unless-stopped

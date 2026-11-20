@@ -1,0 +1,218 @@
+import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { App } from '../App';
+import { MainInvitationPage } from '../components/MainInvitationPage';
+import { buildWeddingCalendarCells } from '../components/sections/WeddingCalendar';
+import { InvitationProvider } from '../context/InvitationContext';
+import { useAutoScroll } from '../hooks/useCardEffects';
+
+beforeAll(() => {
+  if (typeof window !== 'undefined' && !('IntersectionObserver' in window)) {
+    class MockIntersectionObserver {
+      observe() { }
+      unobserve() { }
+      disconnect() { }
+      takeRecords() {
+        return [];
+      }
+    }
+    Object.defineProperty(window, 'IntersectionObserver', {
+      writable: true,
+      configurable: true,
+      value: MockIntersectionObserver,
+    });
+  }
+  if (typeof window !== 'undefined' && 'HTMLMediaElement' in window) {
+    vi.spyOn(window.HTMLMediaElement.prototype, 'play').mockResolvedValue(
+      undefined,
+    );
+    vi.spyOn(window.HTMLMediaElement.prototype, 'pause').mockImplementation(
+      () => {},
+    );
+  }
+});
+
+afterAll(() => {
+  vi.restoreAllMocks();
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
+
+describe('buildWeddingCalendarCells', () => {
+  it('places December 20, 2026 on Sunday and highlights only day 20', () => {
+    const cells = buildWeddingCalendarCells(2026, 12, 20);
+    expect(cells).toHaveLength(32);
+    expect(cells[0].day).toBeNull();
+    expect(cells[1].day).toBe(1);
+
+    const weddingCell = cells.find((c) => c.day === 20);
+    expect(weddingCell?.isWeddingDay).toBe(true);
+
+    const weddingIndex = cells.findIndex((c) => c.day === 20);
+    expect(weddingIndex % 7).toBe(6);
+    expect(cells.filter((c) => c.isWeddingDay)).toHaveLength(1);
+  });
+});
+
+describe('Two-Page Soft Green Wedding Invitation & Cloud Parting Transition', () => {
+  it('renders dedicated envelope opening page first, transitions via cloud parting mist into dedicated main invitation page', async () => {
+    vi.useFakeTimers();
+    window.localStorage.clear();
+    render(<App />);
+
+    // Flush async initial guestbook fetch
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    // Page 1 only: Envelope scene visible, Main Invitation not yet mounted
+    expect(screen.getByRole('region', { name: 'Mở thiệp cưới' })).toBeInTheDocument();
+    expect(screen.queryByText('TRÂN TRỌNG KÍNH MỜI')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /Xem nhanh nội dung thiệp/i }),
+    ).not.toBeInTheDocument();
+
+    // Tap envelope to open & trigger floating hearts + polaroid emerge -> 1.25s hold -> cloud parting transition
+    act(() => {
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Mở phong bì thiệp cưới' }),
+      );
+    });
+
+    const heartsLayer = screen.getByTestId('intro-floating-hearts');
+    expect(heartsLayer.querySelectorAll('.intro-heart-float')).toHaveLength(10);
+
+    // Polaroid finishes rising (320 + 1100 = 1420ms), Page 2 still hidden during 1.25s hold
+    act(() => {
+      vi.advanceTimersByTime(1420);
+    });
+    expect(screen.queryByTestId('cloud-transition')).not.toBeInTheDocument();
+
+    // After 1250ms hold, cloud mist transition overlays the screen
+    act(() => {
+      vi.advanceTimersByTime(1250);
+    });
+    expect(screen.getByTestId('cloud-transition')).toBeInTheDocument();
+
+    // At peak mist (~45% of 1850ms = 833ms), swaps from Page 1 to Page 2 underneath the clouds
+    await act(async () => {
+      vi.advanceTimersByTime(833);
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+    expect(screen.getByText('TRÂN TRỌNG KÍNH MỜI')).toBeInTheDocument();
+    expect(screen.getByTestId('cloud-transition')).toBeInTheDocument();
+
+    // Remaining 1017ms completes cloud parting and lands on Page 2
+    act(() => {
+      vi.advanceTimersByTime(1017);
+    });
+    expect(screen.queryByTestId('cloud-transition')).not.toBeInTheDocument();
+    expect(screen.getByText('TRÂN TRỌNG KÍNH MỜI')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /Xem lại trang mở thiệp/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('supports blessing marquee, like heart burst, gift QR modal, and live RSVP wishes sync', async () => {
+    window.localStorage.clear();
+    render(
+      <InvitationProvider>
+        <MainInvitationPage isPlaying={false} onToggleAudio={vi.fn()} />
+      </InvitationProvider>,
+    );
+
+    expect(await screen.findByText('TRÂN TRỌNG KÍNH MỜI')).toBeInTheDocument();
+    expect(screen.getByText('Quốc Việt')).toBeInTheDocument();
+    expect(screen.getByText('Thu Ngà')).toBeInTheDocument();
+    expect(screen.getByLabelText('Lời chúc nổi bật')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('falling-hearts-overlay').querySelectorAll('.falling-heart'),
+    ).toHaveLength(6);
+    expect(
+      screen.getByRole('button', { name: /tự động cuộn/i }),
+    ).toBeInTheDocument();
+
+    const likeBtns = screen.getAllByRole('button', {
+      name: /Thả tim chúc phúc \(88\)/i,
+    });
+    fireEvent.click(likeBtns[0]);
+    expect(
+      screen.getByRole('button', { name: /Thả tim chúc phúc \(89\)/i }),
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Hộp quà cưới' }));
+    expect(
+      screen.getByRole('dialog', { name: 'Hộp Quà Yêu Thương' }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Đóng hộp quà cưới' }));
+
+    fireEvent.change(screen.getByLabelText('Họ và tên'), {
+      target: { value: 'Lan Phương' },
+    });
+    fireEvent.change(
+      screen.getByLabelText('Lời chúc gửi đến cô dâu chú rể'),
+      { target: { value: 'Chúc hai bạn mãi hạnh phúc nhé!' } },
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Gửi xác nhận' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Cảm ơn bạn đã xác nhận! 💚')).toBeInTheDocument();
+      expect(screen.getAllByText('Lan Phương').length).toBeGreaterThanOrEqual(1);
+      expect(
+        screen.getAllByText(/Chúc hai bạn mãi hạnh phúc nhé!/i).length,
+      ).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  it('useAutoScroll smoothly advances scrollTop across sub-pixel frames and pauses cleanly', () => {
+    vi.useFakeTimers({
+      toFake: [
+        'setTimeout',
+        'clearTimeout',
+        'requestAnimationFrame',
+        'cancelAnimationFrame',
+        'performance',
+        'Date',
+      ],
+    });
+    let storedTop = 0;
+    const fakeContainer = {
+      scrollHeight: 4000,
+      clientHeight: 700,
+      style: { scrollBehavior: 'auto' },
+      get scrollTop() {
+        return storedTop;
+      },
+      set scrollTop(val: number) {
+        // Simulate browser truncating sub-pixel values on 1x displays
+        storedTop = Math.floor(val);
+      },
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    } as unknown as HTMLElement;
+
+    const ref = { current: fakeContainer };
+    const { result } = renderHook(() =>
+      useAutoScroll(ref, { unlocked: true, speedPxPerMs: 0.06 }),
+    );
+
+    act(() => {
+      result.current.startAutoScroll();
+    });
+    expect(result.current.isAutoScrolling).toBe(true);
+
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+
+    expect(storedTop).toBeGreaterThan(20);
+
+    act(() => {
+      result.current.stopAutoScroll();
+    });
+    expect(result.current.isAutoScrolling).toBe(false);
+  });
+});
