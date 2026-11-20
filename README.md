@@ -21,6 +21,10 @@ npm test         # Chạy unit test (Vitest)
 npm run build    # Kiểm tra TypeScript & build production
 ```
 
+## Cấu Hình Thẻ Chia Sẻ Zalo / Facebook (Open Graph)
+- Ảnh xem trước dạng thiệp (`1200×630`) nằm tại `public/images/og-invitation.jpg` và các thẻ `og:*` / `twitter:*` đã được khai báo trong `index.html`.
+- Khi đã có tên miền chính thức, tạo file `.env` (tham khảo `.env.example`) với `VITE_SITE_URL=https://ten-mien-cua-ban` rồi chạy `npm run build` để Vite tự gắn đường dẫn tuyệt đối `https://...` cho `og:image`, `og:image:secure_url` và `og:url` (Facebook/Zalo yêu cầu URL tuyệt đối để tải thẻ xem trước ổn định).
+
 ## Đóng Gói & Chạy Bằng Docker
 ```bash
 # Build và khởi chạy container (truy cập tại http://localhost:8080)
