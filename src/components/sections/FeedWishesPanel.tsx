@@ -1,80 +1,10 @@
 import React from 'react';
-import { CalendarPlus, Check, Copy, Send, X } from 'lucide-react';
-import { GuestWish, WeddingConfig } from '../../types/wedding';
-import { SimpleQrSvg } from '../common/SimpleQrSvg';
-
-interface FeedLeftSidebarProps {
-  config: WeddingConfig;
-  calendarUrl: string;
-  onJumpToRsvp: () => void;
-}
-
-export const FeedLeftSidebar: React.FC<FeedLeftSidebarProps> = ({
-  config,
-  calendarUrl,
-  onJumpToRsvp,
-}) => {
-  return (
-    <aside className="feed-side" aria-label="Thông tin thiệp cưới">
-      <div className="feed-brand">
-        <span className="feed-brand__badge" aria-label={config.coupleTitle}>
-          {config.envelope.monogram.replace(/\s+/g, '')}
-        </span>
-      </div>
-
-      <div className="feed-info">
-        <img
-          src={config.editorial.bannerImageUrl}
-          alt={config.coupleTitle}
-          className="feed-info__cover"
-        />
-        <h2 className="feed-info__title">
-          {config.coupleTitle} — Hoa Cúc Xanh Nhẹ
-        </h2>
-        <p className="feed-info__desc">{config.editorial.feedDescription}</p>
-      </div>
-
-      <div className="feed-promo">
-        <p className="feed-promo__eyebrow">SAVE THE DATE</p>
-        <p className="feed-promo__text">
-          {config.editorial.ceremonyDateLine} • {config.editorial.primaryVenueTitle}
-        </p>
-        <div style={{ display: 'grid', gap: '8px' }}>
-          <button
-            type="button"
-            className="feed-promo__cta"
-            onClick={onJumpToRsvp}
-          >
-            Xác nhận tham dự ngay
-          </button>
-          <a
-            href={calendarUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="feed-copy-btn"
-            style={{ width: '100%', justifyContent: 'center', marginTop: 0 }}
-          >
-            <CalendarPlus size={15} />
-            Thêm vào Google Calendar
-          </a>
-        </div>
-      </div>
-
-      <p className="feed-side__foot">
-        {config.hashtag} · {config.weddingDisplayDate}
-      </p>
-    </aside>
-  );
-};
+import { Send, X } from 'lucide-react';
+import { GuestWish } from '../../types/wedding';
 
 interface FeedRightPanelProps {
-  activeTab: 'wishes' | 'phone';
-  onTabChange: (tab: 'wishes' | 'phone') => void;
   wishes: GuestWish[];
   onJumpToRsvp: () => void;
-  shareUrl: string;
-  copiedLink: boolean;
-  onCopyLink: () => void;
 }
 
 const formatWishTime = (iso: string) => {
@@ -125,135 +55,93 @@ export const WishesList: React.FC<{ wishes: GuestWish[] }> = ({ wishes }) => {
 };
 
 export const FeedRightPanel: React.FC<FeedRightPanelProps> = ({
-  activeTab,
-  onTabChange,
   wishes,
   onJumpToRsvp,
-  shareUrl,
-  copiedLink,
-  onCopyLink,
 }) => {
   return (
-    <aside className="feed-panel" aria-label="Lời chúc và mã QR">
-      <div className="feed-tabs" role="tablist">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'wishes'}
-          className="feed-tab"
-          onClick={() => onTabChange('wishes')}
-        >
-          Lời chúc ({wishes.length})
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'phone'}
-          className="feed-tab"
-          onClick={() => onTabChange('phone')}
-        >
-          Xem trên điện thoại
-        </button>
-      </div>
+        <aside className="feed-panel" aria-label="Lời chúc">
+          <div className="feed-panel__header">
+            Lời chúc ({wishes.length})
+          </div>
 
-      <div className="feed-panel__body">
-        {activeTab === 'wishes' ? (
-          <>
+          <div className="feed-panel__body">
             <p className="feed-wishes-count">
               {wishes.length} lời chúc mừng gửi đến cô dâu &amp; chú rể
             </p>
             <WishesList wishes={wishes} />
-          </>
-        ) : (
-          <div className="feed-phone-view">
-            <div className="feed-phone-qr">
-              <SimpleQrSvg seed={shareUrl} size={172} fgColor="#243025" />
-            </div>
-            <h3 className="feed-phone-title">Quét mã QR bằng điện thoại</h3>
-            <p className="feed-phone-text">
-              Mở camera hoặc Zalo để xem thiệp cưới trực tiếp trên màn hình di động.
-            </p>
-            <button type="button" className="feed-copy-btn" onClick={onCopyLink}>
-              {copiedLink ? <Check size={15} /> : <Copy size={15} />}
-              {copiedLink ? 'Đã sao chép liên kết' : 'Sao chép đường dẫn thiệp'}
+          </div>
+
+          <div className="feed-composer">
+            <button
+              type="button"
+              className="feed-composer__btn"
+              onClick={onJumpToRsvp}
+            >
+              Gửi lời chúc &amp; xác nhận tham dự...
+            </button>
+            <button
+              type="button"
+              className="feed-composer__send"
+              onClick={onJumpToRsvp}
+              aria-label="Đi tới biểu mẫu gửi lời chúc"
+            >
+              <Send size={16} />
             </button>
           </div>
-        )}
-      </div>
-
-      {activeTab === 'wishes' && (
-        <div className="feed-composer">
-          <button
-            type="button"
-            className="feed-composer__btn"
-            onClick={onJumpToRsvp}
-          >
-            Gửi lời chúc &amp; xác nhận tham dự...
-          </button>
-          <button
-            type="button"
-            className="feed-composer__send"
-            onClick={onJumpToRsvp}
-            aria-label="Đi tới biểu mẫu gửi lời chúc"
-          >
-            <Send size={16} />
-          </button>
-        </div>
-      )}
-    </aside>
-  );
+        </aside>
+        );
 };
 
-interface MobileWishesModalProps {
-  isOpen: boolean;
+        interface MobileWishesModalProps {
+          isOpen: boolean;
   onClose: () => void;
-  wishes: GuestWish[];
+        wishes: GuestWish[];
   onJumpToRsvp: () => void;
 }
 
-export const MobileWishesModal: React.FC<MobileWishesModalProps> = ({
-  isOpen,
-  onClose,
-  wishes,
-  onJumpToRsvp,
+        export const MobileWishesModal: React.FC<MobileWishesModalProps> = ({
+          isOpen,
+          onClose,
+          wishes,
+          onJumpToRsvp,
 }) => {
   if (!isOpen) return null;
 
-  return (
-    <div
-      className="sage-modal-backdrop"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="mobile-wishes-title"
-      onClick={onClose}
-    >
-      <div className="sage-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="sage-modal__header">
-          <h3 id="mobile-wishes-title" className="sage-modal__title">
-            Lời chúc mừng ({wishes.length})
-          </h3>
-          <button
-            type="button"
-            className="sage-modal__close"
+          return (
+          <div
+            className="sage-modal-backdrop"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-wishes-title"
             onClick={onClose}
-            aria-label="Đóng danh sách lời chúc"
           >
-            <X size={18} />
-          </button>
-        </div>
-        <WishesList wishes={wishes} />
-        <button
-          type="button"
-          className="rsvp-submit-btn"
-          style={{ marginTop: 18 }}
-          onClick={() => {
-            onClose();
-            onJumpToRsvp();
-          }}
-        >
-          Viết lời chúc của bạn
-        </button>
-      </div>
-    </div>
-  );
+            <div className="sage-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="sage-modal__header">
+                <h3 id="mobile-wishes-title" className="sage-modal__title">
+                  Lời chúc mừng ({wishes.length})
+                </h3>
+                <button
+                  type="button"
+                  className="sage-modal__close"
+                  onClick={onClose}
+                  aria-label="Đóng danh sách lời chúc"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+              <WishesList wishes={wishes} />
+              <button
+                type="button"
+                className="rsvp-submit-btn"
+                style={{ marginTop: 18 }}
+                onClick={() => {
+                  onClose();
+                  onJumpToRsvp();
+                }}
+              >
+                Viết lời chúc của bạn
+              </button>
+            </div>
+          </div>
+          );
 };

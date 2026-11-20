@@ -8,7 +8,6 @@ import {
   Music2,
   Pause,
   Play,
-  QrCode,
   Share2,
 } from 'lucide-react';
 import { useInvitationContext } from '../context/InvitationContext';
@@ -30,7 +29,6 @@ import { WeddingCalendar } from './sections/WeddingCalendar';
 import { GiftModal } from './sections/GiftModal';
 import { RsvpSection } from './sections/RsvpSection';
 import {
-  FeedLeftSidebar,
   FeedRightPanel,
   MobileWishesModal,
 } from './sections/FeedWishesPanel';
@@ -49,8 +47,8 @@ const EditorialTriadHeader: React.FC<{
     variant === 'top'
       ? 'editorial-triad editorial-triad--top'
       : variant === 'white'
-      ? 'editorial-triad editorial-triad--white'
-      : 'editorial-triad editorial-triad--section';
+        ? 'editorial-triad editorial-triad--white'
+        : 'editorial-triad editorial-triad--section';
 
   return (
     <div className={cls}>
@@ -75,21 +73,16 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
   isPlaying,
   onToggleAudio,
 }) => {
-  const {
-    config,
-    services: { calendarService },
-  } = useInvitationContext();
+  const { config } = useInvitationContext();
   const guestbook = useGuestbook();
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const [activeTab, setActiveTab] = useState<'wishes' | 'phone'>('wishes');
   const [giftModalOpen, setGiftModalOpen] = useState(false);
   const [mobileWishesOpen, setMobileWishesOpen] = useState(false);
   const [lightboxPhoto, setLightboxPhoto] = useState<{
     url: string;
     caption?: string;
   } | null>(null);
-  const [copiedLink, setCopiedLink] = useState(false);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const { isAutoScrolling, startAutoScroll, stopAutoScroll } = useAutoScroll(
@@ -121,15 +114,6 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
     return window.location.href;
   }, []);
 
-  const primaryEvent = config.events[1] ?? config.events[0];
-  const calendarUrl = useMemo(() => {
-    if (!primaryEvent) return 'https://calendar.google.com';
-    return calendarService.buildGoogleCalendarUrl(
-      primaryEvent,
-      config.coupleTitle,
-    );
-  }, [calendarService, primaryEvent, config.coupleTitle]);
-
   const showToast = (msg: string) => {
     setToastMsg(msg);
     window.setTimeout(() => {
@@ -159,9 +143,7 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
   const handleCopyShareLink = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
-      setCopiedLink(true);
       showToast('Đã sao chép đường dẫn thiệp cưới!');
-      window.setTimeout(() => setCopiedLink(false), 2200);
     } catch {
       showToast('Hãy sao chép đường dẫn trên thanh địa chỉ nhé!');
     }
@@ -171,12 +153,6 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
 
   return (
     <div className="feed-shell" aria-label="Nội dung thiệp cưới">
-      <FeedLeftSidebar
-        config={config}
-        calendarUrl={calendarUrl}
-        onJumpToRsvp={() => scrollToElement('rsvp-section')}
-      />
-
       <main className="feed-stage">
         <div className="feed-card-row">
           <div className="feed-card-frame">
@@ -667,10 +643,9 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
             />
             <button
               type="button"
-              className={`feed-rail__action ${
-                activeTab === 'wishes' ? 'feed-rail__action--active' : ''
-              }`}
-              onClick={() => setActiveTab('wishes')}
+              className="feed-rail__action feed-rail__action--active"
+              onClick={() => scrollToElement('rsvp-section')}
+              aria-label="Đi tới phần gửi lời chúc"
             >
               <span className="feed-rail__icon">
                 <MessageCircleHeart size={20} />
@@ -701,19 +676,6 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
               </span>
               <span className="feed-rail__label">Chia sẻ</span>
             </button>
-
-            <button
-              type="button"
-              className={`feed-rail__action ${
-                activeTab === 'phone' ? 'feed-rail__action--active' : ''
-              }`}
-              onClick={() => setActiveTab('phone')}
-            >
-              <span className="feed-rail__icon">
-                <QrCode size={19} />
-              </span>
-              <span className="feed-rail__label">Mã QR</span>
-            </button>
           </nav>
         </div>
 
@@ -739,13 +701,8 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
       </main>
 
       <FeedRightPanel
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
         wishes={guestbook.wishes}
         onJumpToRsvp={() => scrollToElement('rsvp-section')}
-        shareUrl={shareUrl}
-        copiedLink={copiedLink}
-        onCopyLink={() => void handleCopyShareLink()}
       />
 
       {/* Mobile bottom CineLove-style quick toolbar */}
