@@ -25,6 +25,7 @@ import { HeartBurstButton } from './common/HeartBurstButton';
 import { PhotoLightbox } from './common/PhotoLightbox';
 import { CardScrollRootProvider, RevealMotion } from './common/RevealMotion';
 import { CountdownSection } from './sections/CountdownSection';
+import { FilmstripReel } from './sections/FilmstripReel';
 import { WeddingCalendar } from './sections/WeddingCalendar';
 import { GiftModal } from './sections/GiftModal';
 import { RsvpSection } from './sections/RsvpSection';
@@ -374,41 +375,16 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
                     <EditorialTriadHeader words={ed.filmstripHeader} />
 
                     <RevealMotion direction="slide-up" delay={0.18}>
-                      <div className="filmstrip-frame">
-                        <span className="filmstrip-code filmstrip-code--tl">
-                          SAGE 400 · ► 42
-                        </span>
-                        <span className="filmstrip-code filmstrip-code--bl">
-                          SAGE 400 · ► 43
-                        </span>
-                        <span className="filmstrip-code filmstrip-code--mr">
-                          BOTANICAL 2010TX · 12
-                        </span>
-
-                        {ed.filmstripFrames.map((frame) => (
-                          <RevealMotion key={frame.id} direction="slide-up" delay={0.18}>
-                            <figure className="filmstrip-cell" style={{ margin: 0 }}>
-                              <img
-                                src={frame.imageUrl}
-                                alt={frame.subtitle}
-                                className="filmstrip-cell__img zoomable-photo"
-                                style={{
-                                  objectPosition: frame.objectPosition ?? '50% 35%',
-                                }}
-                                onClick={() =>
-                                  setLightboxPhoto({
-                                    url: frame.imageUrl,
-                                    caption: frame.subtitle,
-                                  })
-                                }
-                              />
-                              <figcaption className="filmstrip-cell__scrim">
-                                {frame.subtitle}
-                              </figcaption>
-                            </figure>
-                          </RevealMotion>
-                        ))}
-                      </div>
+                      <FilmstripReel
+                        frames={ed.filmstripFrames}
+                        forcePaused={Boolean(lightboxPhoto)}
+                        onSelectFrame={(frame) =>
+                          setLightboxPhoto({
+                            url: frame.imageUrl,
+                            caption: frame.subtitle,
+                          })
+                        }
+                      />
                     </RevealMotion>
                   </section>
 

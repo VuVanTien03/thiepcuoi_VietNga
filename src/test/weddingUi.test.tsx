@@ -135,6 +135,35 @@ describe('Two-Page Soft Green Wedding Invitation & Cloud Parting Transition', ()
       screen.getByRole('button', { name: /tự động cuộn/i }),
     ).toBeInTheDocument();
 
+    // Filmstrip reel runs continuously, toggles pause/play, and pauses when lightbox opens
+    const filmTrack = screen.getByTestId('filmstrip-track');
+    expect(filmTrack).toHaveStyle({ animationPlayState: 'running' });
+
+    const pauseReelBtn = screen.getByRole('button', {
+      name: 'Tạm dừng thước phim',
+    });
+    fireEvent.click(pauseReelBtn);
+    expect(filmTrack).toHaveStyle({ animationPlayState: 'paused' });
+
+    const resumeReelBtn = screen.getByRole('button', {
+      name: 'Tiếp tục chạy thước phim',
+    });
+    fireEvent.click(resumeReelBtn);
+    expect(filmTrack).toHaveStyle({ animationPlayState: 'running' });
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Xem phóng to ảnh: I love three things in this world.',
+      }),
+    );
+    expect(
+      screen.getByRole('dialog', { name: 'I love three things in this world.' }),
+    ).toBeInTheDocument();
+    expect(filmTrack).toHaveStyle({ animationPlayState: 'paused' });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Đóng ảnh phóng to' }));
+    expect(filmTrack).toHaveStyle({ animationPlayState: 'running' });
+
     const likeBtns = screen.getAllByRole('button', {
       name: /Thả tim chúc phúc \(88\)/i,
     });
