@@ -8,7 +8,7 @@ export interface UseGuestbookReturn {
   isSubmitting: boolean;
   error: string | null;
   submittedSuccess: boolean;
-  submitRsvp: (entry: RsvpSubmission) => Promise<void>;
+  submitRsvp: (entry: RsvpSubmission) => Promise<boolean>;
   resetSuccess: () => void;
 }
 
@@ -44,24 +44,29 @@ export function useGuestbook(): UseGuestbookReturn {
   }, [config.initialWishes, guestbookRepo]);
 
   const submitRsvp = useCallback(
-    async (entry: RsvpSubmission) => {
-      setError(null);
-      setIsSubmitting(true);
-      try {
-        const created = await guestbookRepo.submit(entry);
-        setWishes((prev) => [created, ...prev]);
-        setSubmittedSuccess(true);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : 'Không thể gửi xác nhận. Vui lòng thử lại.',
-        );
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
-    [guestbookRepo],
+      async (entry: RsvpSubmission): Promise<boolean> => {
+        setError(null);
+        setIsSubmitting(true);
+        try {
+          const created = await guestbookRepo.submit(entry);
+          setWishes((prev) => [
+            created,
+            ...prev.filter((item) => item.id !== created.id),
+          ]);
+          setSubmittedSuccess(true);
+          return true;
+        } catch (err) {
+          setError(
+            err instanceof Error
+              ? err.message
+              : 'Không thể gửi xác nhận. Vui lòng thử lại.',
+          );
+          return false;
+        } finally {
+          setIsSubmitting(false);
+        }
+      },
+        [guestbookRepo],
   );
 
   const resetSuccess = useCallback(() => {

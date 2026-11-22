@@ -3,7 +3,11 @@ import { WEDDING_CONFIG } from '../config/wedding.config';
 import { WeddingAudioService } from '../services/audio.service';
 import { CalendarService } from '../services/calendar.service';
 import { CountdownService } from '../services/countdown.service';
-import { LocalStorageGuestbookRepository } from '../services/guestbook.service';
+import {
+  createGuestbookRepository,
+  GoogleSheetsGuestbookRepository,
+  LocalStorageGuestbookRepository,
+} from '../services/guestbook.service';
 import { WeddingEvent } from '../types/wedding';
 
 describe('CountdownService', () => {
@@ -106,6 +110,150 @@ describe('LocalStorageGuestbookRepository', () => {
         message: 'Hi',
       }),
     ).rejects.toThrow();
+  });
+});
+
+describe('GoogleSheetsGuestbookRepository & createGuestbookRepository', () => {
+  const endpoint = 'https://script.google.com/macros/s/demo/exec';
+  const seedWish = {
+    id: 'seed-1',
+    guestName: 'Khách Mẫu',
+    side: 'both' as const,
+    attendance: 'attending' as const,
+    guestCount: 1,
+    message: 'Chúc mừng!',
+    createdAt: '2026-11-18T00:00:00Z',
+  };
+
+  it('selects GoogleSheetsGuestbookRepository when endpoint URL is set, otherwise LocalStorage', () => {
+    expect(createGuestbookRepository('')).toBeInstanceOf(
+      LocalStorageGuestbookRepository,
+    );
+    expect(createGuestbookRepository('   ')).toBeInstanceOf(
+      LocalStorageGuestbookRepository,
+    );
+    expect(createGuestbookRepository(endpoint)).toBeInstanceOf(
+      GoogleSheetsGuestbookRepository,
+    );
+  });
+
+  it('posts RSVP with text/plain header and sets sheetGuestCount=0 when not attending', async () => {
+    window.localStorage.clear();
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        ok: true,
+        wish: {
+          id: 'wish-sheet-1',
+          guestName: 'Ngọc Hà',
+          side: 'both',
+          attendance: 'not-attending',
+          guestCount: 1,
+          message: 'Tiếc quá mình bận công tác!',
+          createdAt: '2026-11-22T15:00:00Z',
+        },
+      }),
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    try {
+      const repo = new GoogleSheetsGuestbookRepository(
+        endpoint,
+        'test_sheets_cache_1',
+      );
+      const saved = await repo.submit({
+        guestName: '  Ngọc Hà  ',
+        side: 'both',
+        attendance: 'not-attending',
+        guestCount: 2,
+        message: 'Tiếc quá mình bận công tác!',
+      });
+
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      const [calledUrl, options] = fetchMock.mock.calls[0] as [
+        string,
+        RequestInit,
+      ];
+      expect(calledUrl).toBe(endpoint);
+      expect(options.method).toBe('POST');
+      expect(options.headers).toEqual({
+        'Content-Type': 'text/plain;charset=utf-8',
+      });
+
+      const body = JSON.parse(String(options.body)) as Record<string, unknown>;
+      expect(body.guestName).toBe('Ngọc Hà');
+      expect(body.sheetGuestCount).toBe(0);
+      expect(saved.id).toBe('wish-sheet-1');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('throws an error when Google Sheets POST fails instead of reporting fake success', async () => {
+    window.localStorage.clear();
+    const fetchMock = vi.fn().mockRejectedValue(new Error('Network down'));
+    vi.stubGlobal('fetch', fetchMock);
+
+    try {
+      const repo = new GoogleSheetsGuestbookRepository(
+        endpoint,
+        'test_sheets_cache_err',
+      );
+      await expect(
+        repo.submit({
+          guestName: 'Minh Khôi',
+          side: 'both',
+          attendance: 'attending',
+          guestCount: 2,
+          message: 'Chúc hai bạn hạnh phúc!',
+        }),
+      ).rejects.toThrow(/Không thể kết nối máy chủ/i);
+
+      expect(window.localStorage.getItem('test_sheets_cache_err')).toBeNull();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('loads remote wishes from Google Sheets, caches them, and falls back when offline', async () => {
+    window.localStorage.clear();
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          ok: true,
+          wishes: [
+            {
+              id: 'sheet-10',
+              guestName: 'Thu Trang',
+              side: 'both',
+              attendance: 'attending',
+              guestCount: 2,
+              message: 'Hẹn gặp ngày cưới nha!',
+              createdAt: '2026-11-22T12:00:00Z',
+            },
+          ],
+        }),
+      })
+      .mockRejectedValueOnce(new Error('Offline'));
+    vi.stubGlobal('fetch', fetchMock);
+
+    try {
+      const repo = new GoogleSheetsGuestbookRepository(
+        endpoint,
+        'test_sheets_cache_2',
+      );
+      const onlineWishes = await repo.getAll([seedWish]);
+      expect(onlineWishes).toHaveLength(1);
+      expect(onlineWishes[0].guestName).toBe('Thu Trang');
+
+      const offlineWishes = await repo.getAll([seedWish]);
+      expect(offlineWishes).toHaveLength(1);
+      expect(offlineWishes[0].guestName).toBe('Thu Trang');
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 });
 

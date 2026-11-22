@@ -5,6 +5,7 @@ import { MainInvitationPage } from '../components/MainInvitationPage';
 import { buildWeddingCalendarCells } from '../components/sections/WeddingCalendar';
 import { InvitationProvider } from '../context/InvitationContext';
 import { useAutoScroll } from '../hooks/useCardEffects';
+import { IGuestbookRepository } from '../types/wedding';
 
 beforeAll(() => {
   if (typeof window !== 'undefined' && !('IntersectionObserver' in window)) {
@@ -243,5 +244,46 @@ describe('Two-Page Soft Green Wedding Invitation & Cloud Parting Transition', ()
       result.current.stopAutoScroll();
     });
     expect(result.current.isAutoScrolling).toBe(false);
+  });
+
+  it('preserves RSVP form input and displays error when Google Sheets submission fails', async () => {
+    const failingRepo: IGuestbookRepository = {
+      getAll: vi.fn().mockResolvedValue([]),
+      submit: vi
+        .fn()
+        .mockRejectedValue(
+          new Error('Không thể kết nối máy chủ lưu xác nhận.'),
+        ),
+    };
+
+    render(
+      <InvitationProvider services={{ guestbookRepo: failingRepo }}>
+        <MainInvitationPage isPlaying={false} onToggleAudio={vi.fn()} />
+      </InvitationProvider>,
+    );
+
+    const nameInput = (await screen.findByLabelText(
+      'Họ và tên',
+    )) as HTMLInputElement;
+    const messageInput = screen.getByLabelText(
+      'Lời chúc gửi đến cô dâu chú rể',
+    ) as HTMLTextAreaElement;
+
+    fireEvent.change(nameInput, { target: { value: 'Minh Anh' } });
+    fireEvent.change(messageInput, {
+      target: { value: 'Chúc hai bạn mãi hạnh phúc!' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Gửi xác nhận' }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Không thể kết nối máy chủ lưu xác nhận.'),
+      ).toBeInTheDocument();
+    });
+    expect(
+      screen.queryByText('Cảm ơn bạn đã xác nhận! 💚'),
+    ).not.toBeInTheDocument();
+    expect(nameInput.value).toBe('Minh Anh');
+    expect(messageInput.value).toBe('Chúc hai bạn mãi hạnh phúc!');
   });
 });

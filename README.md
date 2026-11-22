@@ -11,7 +11,18 @@ Dự án React + TypeScript thiết kế theo nguyên lý **SOLID**, tách biệ
 - `src/config/wedding.config.ts`: Chỉnh tên cô dâu chú rể, cha mẹ hai bên, ngày cưới, lịch trình 3 buổi lễ, câu chuyện tình yêu, album ảnh Polaroid, thông tin ngân hàng mừng cưới và bật/tắt từng section (`sections`).
 - `src/config/theme.config.ts`: Chỉnh bảng màu xanh rêu – kem giấy dó và thời gian các hiệu ứng (`flapOpenDurationMs`, `polaroidRiseDurationMs`, `holdAfterEmergeMs`, `cloudTransitionDurationMs`).
 - `public/images/`: Thay thế các ảnh `couple-hero.jpg`, `couple-walk.jpg`, `couple-closeup.jpg`, `couple-rings.jpg` bằng ảnh thật của bạn.
-- `src/services/`: Chứa các service độc lập (`CountdownService`, `CalendarService`, `LocalStorageGuestbookRepository`, `WeddingAudioService`) cài đặt theo interface trong `src/types/wedding.ts`, tiêm qua `InvitationProvider` (`src/context/InvitationContext.tsx`).
+- `src/services/`: Chứa các service độc lập (`CountdownService`, `CalendarService`, `LocalStorageGuestbookRepository`, `GoogleSheetsGuestbookRepository`, `WeddingAudioService`) cài đặt theo interface trong `src/types/wedding.ts`, tiêm qua `InvitationProvider` (`src/context/InvitationContext.tsx`).
+
+## Lưu Xác Nhận Tham Dự (RSVP) Vào Google Sheets
+1. Tạo một **Google Sheet** mới (ví dụ: `RSVP Thiệp Cưới Việt Ngà`).
+2. Trong Google Sheet, vào **Tiện ích mở rộng (Extensions) → Apps Script**, xóa nội dung mặc định và dán toàn bộ mã nguồn từ `scripts/google-apps-script-rsvp.gs`, nhấn **Lưu**.
+3. Nhấn **Triển khai (Deploy) → Tùy chọn triển khai mới (New deployment) → Chọn loại: Ứng dụng web (Web app)**:
+   - **Thực thi dưới dạng (Execute as)**: Tôi (`Me`)
+   - **Người có quyền truy cập (Who has access)**: Bất kỳ ai (`Anyone`)
+4. Bấm **Triển khai**, cấp quyền truy cập Google Sheets & gửi Gmail (dùng để báo email mỗi khi có khách xác nhận), rồi copy đường dẫn Web App có đuôi `/exec`.
+5. Tạo file `.env` từ `.env.example`, dán URL vào biến `VITE_GOOGLE_SHEETS_URL=https://script.google.com/macros/s/.../exec`, sau đó chạy `npm run build` trước khi deploy.
+   - Tab `RSVP` trên Sheet tự động tạo đủ cột và có cột **Hiển thị** (`TRUE` mặc định; đổi thành `FALSE` nếu muốn ẩn lời chúc nào trên web).
+   - Khi khách chọn không tham dự, cột **Số người** ghi `0` để công thức tổng khách chính xác.
 
 ## Chạy Dự Án
 ```bash

@@ -4,7 +4,7 @@ import { WEDDING_CONFIG } from '../config/wedding.config';
 import { WeddingAudioService } from '../services/audio.service';
 import { CalendarService } from '../services/calendar.service';
 import { CountdownService } from '../services/countdown.service';
-import { LocalStorageGuestbookRepository } from '../services/guestbook.service';
+import { createGuestbookRepository } from '../services/guestbook.service';
 import {
   IAudioService,
   ICalendarService,
@@ -51,23 +51,24 @@ export const InvitationProvider: React.FC<InvitationProviderProps> = ({
     const resolvedServices: InvitationServices = {
       countdownService: services?.countdownService ?? new CountdownService(),
       guestbookRepo:
-        services?.guestbookRepo ?? new LocalStorageGuestbookRepository(),
+      services?.guestbookRepo ??
+      createGuestbookRepository(import.meta.env.VITE_GOOGLE_SHEETS_URL),
       calendarService: services?.calendarService ?? new CalendarService(),
-      audioService: services?.audioService ?? new WeddingAudioService(),
+        audioService: services?.audioService ?? new WeddingAudioService(),
     };
 
-    return {
-      config,
-      theme,
-      services: resolvedServices,
-    };
-  }, [config, theme, services]);
+  return {
+    config,
+    theme,
+    services: resolvedServices,
+  };
+}, [config, theme, services]);
 
-  return (
-    <InvitationContext.Provider value={value}>
-      {children}
-    </InvitationContext.Provider>
-  );
+return (
+  <InvitationContext.Provider value={value}>
+    {children}
+  </InvitationContext.Provider>
+);
 };
 
 export function useInvitationContext(): InvitationContextValue {
