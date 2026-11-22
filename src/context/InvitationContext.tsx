@@ -48,13 +48,17 @@ export const InvitationProvider: React.FC<InvitationProviderProps> = ({
   services,
 }) => {
   const value = useMemo<InvitationContextValue>(() => {
+    const sheetsEndpoint =
+      import.meta.env.MODE === 'test'
+        ? undefined
+        : import.meta.env.VITE_GOOGLE_SHEETS_URL;
+
     const resolvedServices: InvitationServices = {
       countdownService: services?.countdownService ?? new CountdownService(),
       guestbookRepo:
-      services?.guestbookRepo ??
-      createGuestbookRepository(import.meta.env.VITE_GOOGLE_SHEETS_URL),
+      services?.guestbookRepo ?? createGuestbookRepository(sheetsEndpoint),
       calendarService: services?.calendarService ?? new CalendarService(),
-        audioService: services?.audioService ?? new WeddingAudioService(),
+          audioService: services?.audioService ?? new WeddingAudioService(),
     };
 
   return {

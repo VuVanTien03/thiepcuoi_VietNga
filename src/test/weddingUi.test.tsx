@@ -5,6 +5,7 @@ import { MainInvitationPage } from '../components/MainInvitationPage';
 import { buildWeddingCalendarCells } from '../components/sections/WeddingCalendar';
 import { InvitationProvider } from '../context/InvitationContext';
 import { useAutoScroll } from '../hooks/useCardEffects';
+import { LocalStorageGuestbookRepository } from '../services/guestbook.service';
 import { IGuestbookRepository } from '../types/wedding';
 
 beforeAll(() => {
@@ -28,7 +29,7 @@ beforeAll(() => {
       undefined,
     );
     vi.spyOn(window.HTMLMediaElement.prototype, 'pause').mockImplementation(
-      () => {},
+      () => { },
     );
   }
 });
@@ -120,170 +121,172 @@ describe('Two-Page Soft Green Wedding Invitation & Cloud Parting Transition', ()
   it('supports blessing marquee, like heart burst, gift QR modal, and live RSVP wishes sync', async () => {
     window.localStorage.clear();
     render(
-      <InvitationProvider>
-        <MainInvitationPage isPlaying={false} onToggleAudio={vi.fn()} />
-      </InvitationProvider>,
-    );
+        <InvitationProvider
+          services={{ guestbookRepo: new LocalStorageGuestbookRepository() }}
+        >
+          <MainInvitationPage isPlaying={false} onToggleAudio={vi.fn()} />
+        </InvitationProvider>,
+        );
 
-    expect(await screen.findByText('TRÂN TRỌNG KÍNH MỜI')).toBeInTheDocument();
-    expect(screen.getByText('Quốc Việt')).toBeInTheDocument();
-    expect(screen.getByText('Thu Ngà')).toBeInTheDocument();
-    expect(screen.getByLabelText('Lời chúc nổi bật')).toBeInTheDocument();
-    expect(
-      screen.getByTestId('falling-hearts-overlay').querySelectorAll('.falling-heart'),
-    ).toHaveLength(6);
-    expect(
-      screen.getByRole('button', { name: /tự động cuộn/i }),
-    ).toBeInTheDocument();
+        expect(await screen.findByText('TRÂN TRỌNG KÍNH MỜI')).toBeInTheDocument();
+        expect(screen.getByText('Quốc Việt')).toBeInTheDocument();
+        expect(screen.getByText('Thu Ngà')).toBeInTheDocument();
+        expect(screen.getByLabelText('Lời chúc nổi bật')).toBeInTheDocument();
+        expect(
+        screen.getByTestId('falling-hearts-overlay').querySelectorAll('.falling-heart'),
+        ).toHaveLength(6);
+        expect(
+        screen.getByRole('button', {name: /tự động cuộn/i }),
+        ).toBeInTheDocument();
 
-    // Filmstrip reel runs continuously, toggles pause/play, and pauses when lightbox opens
-    const filmTrack = screen.getByTestId('filmstrip-track');
-    expect(filmTrack).toHaveStyle({ animationPlayState: 'running' });
+        // Filmstrip reel runs continuously, toggles pause/play, and pauses when lightbox opens
+        const filmTrack = screen.getByTestId('filmstrip-track');
+        expect(filmTrack).toHaveStyle({animationPlayState: 'running' });
 
-    const pauseReelBtn = screen.getByRole('button', {
-      name: 'Tạm dừng thước phim',
+        const pauseReelBtn = screen.getByRole('button', {
+          name: 'Tạm dừng thước phim',
     });
-    fireEvent.click(pauseReelBtn);
-    expect(filmTrack).toHaveStyle({ animationPlayState: 'paused' });
+        fireEvent.click(pauseReelBtn);
+        expect(filmTrack).toHaveStyle({animationPlayState: 'paused' });
 
-    const resumeReelBtn = screen.getByRole('button', {
-      name: 'Tiếp tục chạy thước phim',
+        const resumeReelBtn = screen.getByRole('button', {
+          name: 'Tiếp tục chạy thước phim',
     });
-    fireEvent.click(resumeReelBtn);
-    expect(filmTrack).toHaveStyle({ animationPlayState: 'running' });
+        fireEvent.click(resumeReelBtn);
+        expect(filmTrack).toHaveStyle({animationPlayState: 'running' });
 
-    fireEvent.click(
-      screen.getByRole('button', {
-        name: 'Xem phóng to ảnh: I love three things in this world.',
+        fireEvent.click(
+        screen.getByRole('button', {
+          name: 'Xem phóng to ảnh: I love three things in this world.',
       }),
-    );
-    expect(
-      screen.getByRole('dialog', { name: 'I love three things in this world.' }),
-    ).toBeInTheDocument();
-    expect(filmTrack).toHaveStyle({ animationPlayState: 'paused' });
+        );
+        expect(
+        screen.getByRole('dialog', {name: 'I love three things in this world.' }),
+        ).toBeInTheDocument();
+        expect(filmTrack).toHaveStyle({animationPlayState: 'paused' });
 
-    fireEvent.click(screen.getByRole('button', { name: 'Đóng ảnh phóng to' }));
-    expect(filmTrack).toHaveStyle({ animationPlayState: 'running' });
+        fireEvent.click(screen.getByRole('button', {name: 'Đóng ảnh phóng to' }));
+        expect(filmTrack).toHaveStyle({animationPlayState: 'running' });
 
-    const likeBtns = screen.getAllByRole('button', {
-      name: /Thả tim chúc phúc \(88\)/i,
+        const likeBtns = screen.getAllByRole('button', {
+          name: /Thả tim chúc phúc \(88\)/i,
     });
-    fireEvent.click(likeBtns[0]);
-    expect(
-      screen.getByRole('button', { name: /Thả tim chúc phúc \(89\)/i }),
-    ).toBeInTheDocument();
+        fireEvent.click(likeBtns[0]);
+        expect(
+        screen.getByRole('button', {name: /Thả tim chúc phúc \(89\)/i }),
+        ).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Hộp quà cưới' }));
-    expect(
-      screen.getByRole('dialog', { name: 'Hộp Quà Yêu Thương' }),
-    ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Đóng hộp quà cưới' }));
+        fireEvent.click(screen.getByRole('button', {name: 'Hộp quà cưới' }));
+        expect(
+        screen.getByRole('dialog', {name: 'Hộp Quà Yêu Thương' }),
+        ).toBeInTheDocument();
+        fireEvent.click(screen.getByRole('button', {name: 'Đóng hộp quà cưới' }));
 
-    fireEvent.change(screen.getByLabelText('Họ và tên'), {
-      target: { value: 'Lan Phương' },
+        fireEvent.change(screen.getByLabelText('Họ và tên'), {
+          target: {value: 'Lan Phương' },
     });
-    fireEvent.change(
-      screen.getByLabelText('Lời chúc gửi đến cô dâu chú rể'),
-      { target: { value: 'Chúc hai bạn mãi hạnh phúc nhé!' } },
-    );
-    fireEvent.click(screen.getByRole('button', { name: 'Gửi xác nhận' }));
+        fireEvent.change(
+        screen.getByLabelText('Lời chúc gửi đến cô dâu chú rể'),
+        {target: {value: 'Chúc hai bạn mãi hạnh phúc nhé!' } },
+        );
+        fireEvent.click(screen.getByRole('button', {name: 'Gửi xác nhận' }));
 
     await waitFor(() => {
-      expect(screen.getByText('Cảm ơn bạn đã xác nhận! 💚')).toBeInTheDocument();
-      expect(screen.getAllByText('Lan Phương').length).toBeGreaterThanOrEqual(1);
-      expect(
+          expect(screen.getByText('Cảm ơn bạn đã xác nhận! 💚')).toBeInTheDocument();
+        expect(screen.getAllByText('Lan Phương').length).toBeGreaterThanOrEqual(1);
+        expect(
         screen.getAllByText(/Chúc hai bạn mãi hạnh phúc nhé!/i).length,
-      ).toBeGreaterThanOrEqual(1);
+        ).toBeGreaterThanOrEqual(1);
     });
   });
 
   it('useAutoScroll smoothly advances scrollTop across sub-pixel frames and pauses cleanly', () => {
-    vi.useFakeTimers({
-      toFake: [
-        'setTimeout',
-        'clearTimeout',
-        'requestAnimationFrame',
-        'cancelAnimationFrame',
-        'performance',
-        'Date',
-      ],
-    });
-    let storedTop = 0;
-    const fakeContainer = {
-      scrollHeight: 4000,
-      clientHeight: 700,
-      style: { scrollBehavior: 'auto' },
-      get scrollTop() {
+          vi.useFakeTimers({
+            toFake: [
+              'setTimeout',
+              'clearTimeout',
+              'requestAnimationFrame',
+              'cancelAnimationFrame',
+              'performance',
+              'Date',
+            ],
+          });
+        let storedTop = 0;
+        const fakeContainer = {
+          scrollHeight: 4000,
+        clientHeight: 700,
+        style: {scrollBehavior: 'auto' },
+        get scrollTop() {
         return storedTop;
       },
-      set scrollTop(val: number) {
-        // Simulate browser truncating sub-pixel values on 1x displays
-        storedTop = Math.floor(val);
+        set scrollTop(val: number) {
+          // Simulate browser truncating sub-pixel values on 1x displays
+          storedTop = Math.floor(val);
       },
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
     } as unknown as HTMLElement;
 
-    const ref = { current: fakeContainer };
-    const { result } = renderHook(() =>
-      useAutoScroll(ref, { unlocked: true, speedPxPerMs: 0.06 }),
-    );
+        const ref = {current: fakeContainer };
+        const {result} = renderHook(() =>
+        useAutoScroll(ref, {unlocked: true, speedPxPerMs: 0.06 }),
+        );
 
     act(() => {
-      result.current.startAutoScroll();
+          result.current.startAutoScroll();
     });
-    expect(result.current.isAutoScrolling).toBe(true);
+        expect(result.current.isAutoScrolling).toBe(true);
 
     act(() => {
-      vi.advanceTimersByTime(1000);
+          vi.advanceTimersByTime(1000);
     });
 
-    expect(storedTop).toBeGreaterThan(20);
+        expect(storedTop).toBeGreaterThan(20);
 
     act(() => {
-      result.current.stopAutoScroll();
+          result.current.stopAutoScroll();
     });
-    expect(result.current.isAutoScrolling).toBe(false);
+        expect(result.current.isAutoScrolling).toBe(false);
   });
 
   it('preserves RSVP form input and displays error when Google Sheets submission fails', async () => {
     const failingRepo: IGuestbookRepository = {
-      getAll: vi.fn().mockResolvedValue([]),
-      submit: vi
+          getAll: vi.fn().mockResolvedValue([]),
+        submit: vi
         .fn()
         .mockRejectedValue(
-          new Error('Không thể kết nối máy chủ lưu xác nhận.'),
+        new Error('Không thể kết nối máy chủ lưu xác nhận.'),
         ),
     };
 
-    render(
-      <InvitationProvider services={{ guestbookRepo: failingRepo }}>
-        <MainInvitationPage isPlaying={false} onToggleAudio={vi.fn()} />
-      </InvitationProvider>,
-    );
+        render(
+        <InvitationProvider services={{ guestbookRepo: failingRepo }}>
+          <MainInvitationPage isPlaying={false} onToggleAudio={vi.fn()} />
+        </InvitationProvider>,
+        );
 
-    const nameInput = (await screen.findByLabelText(
-      'Họ và tên',
-    )) as HTMLInputElement;
-    const messageInput = screen.getByLabelText(
-      'Lời chúc gửi đến cô dâu chú rể',
-    ) as HTMLTextAreaElement;
+        const nameInput = (await screen.findByLabelText(
+        'Họ và tên',
+        )) as HTMLInputElement;
+        const messageInput = screen.getByLabelText(
+        'Lời chúc gửi đến cô dâu chú rể',
+        ) as HTMLTextAreaElement;
 
-    fireEvent.change(nameInput, { target: { value: 'Minh Anh' } });
-    fireEvent.change(messageInput, {
-      target: { value: 'Chúc hai bạn mãi hạnh phúc!' },
+        fireEvent.change(nameInput, {target: {value: 'Minh Anh' } });
+        fireEvent.change(messageInput, {
+          target: {value: 'Chúc hai bạn mãi hạnh phúc!' },
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Gửi xác nhận' }));
+        fireEvent.click(screen.getByRole('button', {name: 'Gửi xác nhận' }));
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Không thể kết nối máy chủ lưu xác nhận.'),
-      ).toBeInTheDocument();
+          expect(
+            screen.getByText('Không thể kết nối máy chủ lưu xác nhận.'),
+          ).toBeInTheDocument();
     });
-    expect(
-      screen.queryByText('Cảm ơn bạn đã xác nhận! 💚'),
-    ).not.toBeInTheDocument();
-    expect(nameInput.value).toBe('Minh Anh');
-    expect(messageInput.value).toBe('Chúc hai bạn mãi hạnh phúc!');
+        expect(
+        screen.queryByText('Cảm ơn bạn đã xác nhận! 💚'),
+        ).not.toBeInTheDocument();
+        expect(nameInput.value).toBe('Minh Anh');
+        expect(messageInput.value).toBe('Chúc hai bạn mãi hạnh phúc!');
   });
 });

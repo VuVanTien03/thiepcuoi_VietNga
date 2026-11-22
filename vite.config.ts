@@ -2,6 +2,8 @@ import { defineConfig } from 'vitest/config';
 import { loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 
+const OG_IMAGE_PATH = '/images/og-invitation.jpg?v=20261122';
+
 /**
  * Injects absolute Open Graph / canonical URLs into index.html when VITE_SITE_URL is configured
  * so Facebook & Zalo link crawlers always receive full https:// URLs.
@@ -14,7 +16,7 @@ function openGraphMetaPlugin(siteUrlRaw: string): Plugin {
     transformIndexHtml(html) {
       if (!siteUrl) return html;
 
-      const ogImageUrl = `${siteUrl}/images/og-invitation.jpg`;
+      const ogImageUrl = `${siteUrl}${OG_IMAGE_PATH}`;
       const extraTags = [
         `<meta property="og:url" content="${siteUrl}/" />`,
         `<link rel="canonical" href="${siteUrl}/" />`,
@@ -28,8 +30,8 @@ function openGraphMetaPlugin(siteUrlRaw: string): Plugin {
 
       return html
         .replace(
-          /content="\/images\/og-invitation\.jpg"/g,
-          `content="${ogImageUrl}"`,
+          /(content|href)="\/images\/og-invitation\.jpg(?:\?[^"]*)?"/g,
+          (_, attr: string) => `${attr}="${ogImageUrl}"`,
         )
         .replace('</head>', `    ${extraTags.join('\n    ')}\n  </head>`);
     },
