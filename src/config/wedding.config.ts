@@ -22,7 +22,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     tapPrompt: 'Chạm để mở thiệp',
     openedPrompt: 'Đã mở thiệp ♥ Cuộn xuống xem chi tiết',
     recipientPlaceholder: 'Quý khách & Gia đình',
-    emergingPolaroidUrl: '/images/couple-closeup.jpg',
+    emergingPolaroidUrl: '/images/wedding/polaroid-cover.jpg',
     emergingPolaroidCaption: 'Save Our Date — 20.12.2026',
     emergingDateStamp: 'CHỦ NHẬT • 20 THÁNG 12',
   },
@@ -43,7 +43,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     openingWarmNote:
       'Gửi đến bạn tấm thiệp cưới đầy yêu thương.\nNhững ai nhận được lời mời này đều là những người đặc biệt với bọn mình.\nMong bạn và gia đình sẽ đến chung vui,\nCùng chứng kiến khoảnh khắc hạnh phúc nhất của hai đứa.\nCảm ơn vì luôn bên cạnh và yêu thương.\nBọn mình rất mong được gặp bạn trong ngày vui này! 💚',
     bannerHeader: ['FALL IN', 'LOVE', 'WEDDING'],
-    bannerImageUrl: '/images/couple-walk.jpg',
+    bannerImageUrl: '/images/wedding/banner-garden-smile.jpg',
     bannerCaption:
       'As the clouds and mist dissipate, I love you and everyone knows it',
     thankYouParagraph:
@@ -55,40 +55,40 @@ export const WEDDING_CONFIG: WeddingConfig = {
     filmstripFrames: [
       {
         id: 'film-1',
-        imageUrl: '/images/couple-walk.jpg',
+        imageUrl: '/images/wedding/film-camera.jpg',
         subtitle: 'I love three things in this world.',
-        objectPosition: '50% 34%',
+        objectPosition: '50% 50%',
       },
       {
         id: 'film-2',
-        imageUrl: '/images/couple-closeup.jpg',
+        imageUrl: '/images/wedding/film-vows.jpg',
         subtitle: 'Sun, moon and you.',
-        objectPosition: '50% 24%',
+        objectPosition: '50% 50%',
       },
       {
         id: 'film-3',
-        imageUrl: '/images/couple-rings.jpg',
+        imageUrl: '/images/wedding/studio-rings.jpg',
         subtitle: 'Sun for morning, moon for night, and you forever.',
-        objectPosition: '50% 52%',
+        objectPosition: '50% 24%',
       },
     ],
     collageLeadPoem:
       'Có lẽ thế gian này có vô vàn điều tươi đẹp,\nNhưng trong lòng em, đẹp nhất vẫn chỉ có anh',
-    collageLargePhotoUrl: '/images/couple-hero.jpg',
-    collageInsetPhotoUrl: '/images/couple-cutout.png',
+    collageLargePhotoUrl: '/images/wedding/balcony-couple.jpg',
+    collageInsetPhotoUrl: '/images/wedding/couple-cutout.png',
     collageSideVerse:
       'Mong gió xuân dịu dàng với em hơn,\nXua tan muộn phiền,\nĐể mọi thứ chỉ còn lại dịu êm.',
-    panoramaTopUrl: '/images/couple-walk.jpg',
+    panoramaTopUrl: '/images/wedding/panorama-aodai-hands.jpg',
     panoramaHeader: ['Fall in', 'love', 'Wedding'],
-    panoramaBottomUrl: '/images/couple-rings.jpg',
+    panoramaBottomUrl: '/images/wedding/panorama-uniform-closeup.jpg',
     calendarVerse:
       'Đi một vòng lớn rồi vẫn gặp anh,\nTừ đó, thế gian bỗng hóa dịu dàng.',
-    calendarPortraitUrl: '/images/couple-hero.jpg',
+    calendarPortraitUrl: '/images/wedding/uniform-main.jpg',
     calendarFooterLine: 'Chủ Nhật, 20/12/2026',
     calendarFooterTimeLine: 'Âm lịch 12/11 | 11:30 AM',
     closingPoemTop:
       'Hạnh phúc lớn nhất chính là được nắm tay anh,\nCùng nhau đi hết cuộc đời lãng mạn này',
-    closingFeaturePhotoUrl: '/images/couple-walk.jpg',
+    closingFeaturePhotoUrl: '/images/wedding/garden-kiss.jpg',
     closingFeatureHeader: ['SWEET', 'WEDDING', 'INVITATION'],
     closingPoemBottom:
       '“Hết lần này đến lần khác, đem chuyện tình riêng khoe với thế gian,\nChỉ vì mỗi lần nhìn em, anh lại thấy đó là điều đáng tự hào nhất.”',
@@ -105,7 +105,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     shortName: 'Quốc Việt',
     birthOrder: 'Trưởng Nam',
     bio: 'Chàng trai yêu nhiếp ảnh phim, cà phê sáng cuối tuần và luôn giữ nụ cười dịu dàng dành riêng cho cô dâu.',
-    avatarUrl: '/images/couple-hero.jpg',
+    avatarUrl: '/images/wedding/groom-solo.jpg',
     parents: {
       father: 'Ông Nguyễn Văn Hùng',
       mother: 'Bà Trần Thị Lan Anh',
@@ -120,7 +120,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     shortName: 'Thu Ngà',
     birthOrder: 'Út Nữ',
     bio: 'Cô gái thích mùi hương hoa cúc trắng, lá bạch đàn xanh mát và lưu giữ từng khoảnh khắc bên nhau.',
-    avatarUrl: '/images/couple-closeup.jpg',
+    avatarUrl: '/images/wedding/bride-solo.jpg',
     parents: {
       father: 'Ông Phạm Minh Tuấn',
       mother: 'Bà Lê Thu Hà',
@@ -180,7 +180,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
       title: 'Lần Đầu Gặp Gỡ Dưới Cơn Mưa Đà Lạt',
       description:
         'Chúng mình tình cờ trú mưa tại một tiệm sách nhỏ trên con dốc sương mù, cùng chọn chung một cuốn tập ảnh và bắt đầu câu chuyện kéo dài đến tận tối muộn.',
-      imageUrl: '/images/couple-closeup.jpg',
+      imageUrl: '/images/wedding/garden-vows.jpg',
       caption: 'Chiều mưa tháng 10 ở phố núi',
       rotationDeg: -2.5,
     },
@@ -190,7 +190,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
       title: 'Chuyến Đi Xa Đầu Tiên Cùng Nhau',
       description:
         'Những tấm ảnh phim đầu tiên được chụp trên đồi cỏ xanh dịu. Từ đó, đi đâu chúng mình cũng lưu giữ thanh xuân qua từng khung hình nhẹ nhàng.',
-      imageUrl: '/images/couple-walk.jpg',
+      imageUrl: '/images/wedding/garden-camera.jpg',
       caption: 'Đồi cỏ xanh & nắng chiều',
       rotationDeg: 2.2,
     },
@@ -200,7 +200,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
       title: 'Lời Hứa Trọn Đời',
       description:
         'Giữa khu vườn ngập tràn hoa cúc trắng và lá xanh dịu mát, câu hỏi “Làm vợ anh nhé?” đã nhận được cái gật đầu hạnh phúc nhất.',
-      imageUrl: '/images/couple-rings.jpg',
+      imageUrl: '/images/wedding/studio-rings.jpg',
       caption: 'She said Yes!',
       rotationDeg: -1.8,
     },
@@ -209,7 +209,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
   gallery: [
     {
       id: 'gal-1',
-      imageUrl: '/images/couple-hero.jpg',
+      imageUrl: '/images/wedding/aodai-nhacohy.jpg',
       caption: 'Ánh nắng đầu ngày trong khu vườn xanh',
       dateLabel: '10.2026',
       rotationDeg: -3,
@@ -217,7 +217,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     },
     {
       id: 'gal-2',
-      imageUrl: '/images/couple-walk.jpg',
+      imageUrl: '/images/wedding/aodai-hands.jpg',
       caption: 'Bước bên nhau qua những triền cỏ',
       dateLabel: '10.2026',
       rotationDeg: 2.4,
@@ -225,7 +225,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     },
     {
       id: 'gal-3',
-      imageUrl: '/images/couple-closeup.jpg',
+      imageUrl: '/images/wedding/garden-bouquet.jpg',
       caption: 'Khoảnh khắc bình yên nhất',
       dateLabel: '11.2026',
       rotationDeg: -1.6,
@@ -233,7 +233,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     },
     {
       id: 'gal-4',
-      imageUrl: '/images/couple-rings.jpg',
+      imageUrl: '/images/wedding/uniform-embrace.jpg',
       caption: 'Hai bàn tay đan chặt lời hẹn ước',
       dateLabel: '11.2026',
       rotationDeg: 3.1,

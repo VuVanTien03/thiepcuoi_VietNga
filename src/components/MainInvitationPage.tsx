@@ -479,7 +479,7 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
                         src={ed.panoramaBottomUrl}
                         alt={config.coupleTitle}
                         className="panorama-split__img zoomable-photo"
-                        style={{ objectPosition: '50% 55%' }}
+                        style={{ objectPosition: '50% 50%' }}
                         onClick={() =>
                           setLightboxPhoto({
                             url: ed.panoramaBottomUrl,
