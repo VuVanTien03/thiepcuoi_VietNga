@@ -22,7 +22,7 @@ export const FilmstripReel: React.FC<FilmstripReelProps> = ({
   onSelectFrame,
 }) => {
   const copyRef = useRef<HTMLDivElement | null>(null);
-  const [copyHeight, setCopyHeight] = useState(900);
+  const [copyHeight, setCopyHeight] = useState(1200);
   const [userPaused, setUserPaused] = useState(false);
 
   useEffect(() => {

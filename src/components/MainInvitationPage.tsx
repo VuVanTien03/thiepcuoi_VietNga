@@ -456,44 +456,7 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
                     </div>
                   </section>
 
-                  {/* 8. Dual Panorama Split */}
-                  <section className="panorama-split">
-                    <RevealMotion direction="slide-up" delay={0.18}>
-                      <img
-                        src={ed.panoramaTopUrl}
-                        alt={config.coupleTitle}
-                        className="panorama-split__img zoomable-photo"
-                        style={{ objectPosition: ed.panoramaTopPosition ?? '50% 13%' }}
-                        onClick={() =>
-                          setLightboxPhoto({
-                            url: ed.panoramaTopUrl,
-                            caption: config.coupleTitle,
-                          })
-                        }
-                      />
-                    </RevealMotion>
-
-                    <div className="panorama-split__mid">
-                      <EditorialTriadHeader words={ed.panoramaHeader} />
-                    </div>
-
-                    <RevealMotion direction="slide-up" delay={0.18}>
-                      <img
-                        src={ed.panoramaBottomUrl}
-                        alt={config.coupleTitle}
-                        className="panorama-split__img zoomable-photo"
-                        style={{ objectPosition: ed.panoramaBottomPosition ?? '15% 50%' }}
-                        onClick={() =>
-                          setLightboxPhoto({
-                            url: ed.panoramaBottomUrl,
-                            caption: config.coupleTitle,
-                          })
-                        }
-                      />
-                    </RevealMotion>
-                  </section>
-
-                  {/* 9. Save The Date Polaroid Arch & Calendar Overlay */}
+                  {/* 8. Save The Date Polaroid Arch & Calendar Overlay */}
                   <section className="calendar-section" aria-label="Lịch ngày cưới">
                     <RevealMotion direction="slide-up" delay={0.15}>
                       <SageHeartMark />

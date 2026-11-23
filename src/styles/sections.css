@@ -595,7 +595,7 @@
 .filmstrip-cell {
   position: relative;
   width: 100%;
-  aspect-ratio: 406 / 278;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: #121a13;
   border: 1px solid rgba(220, 234, 215, 0.11);
@@ -932,23 +932,7 @@
   white-space: pre-line;
 }
 
-/* 8. Dual Panorama Split */
-.panorama-split {
-  padding: 0 0 42px;
-}
-
-.panorama-split__img {
-  width: 100%;
-  aspect-ratio: 5 / 4;
-  object-fit: cover;
-  object-position: 50% 25%;
-}
-
-.panorama-split__mid {
-  padding: 14px 0;
-}
-
-/* 9. Save The Date Polaroid Arch & Calendar */
+/* 8. Save The Date Polaroid Arch & Calendar */
 .calendar-section {
   padding: 20px 24px 36px;
 }

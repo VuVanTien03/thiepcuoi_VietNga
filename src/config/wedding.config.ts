@@ -71,6 +71,12 @@ export const WEDDING_CONFIG: WeddingConfig = {
         subtitle: 'Sun for morning, moon for night, and you forever.',
         objectPosition: '50% 24%',
       },
+      {
+        id: 'film-4',
+        imageUrl: '/images/wedding/aodai-hands.jpg',
+        subtitle: 'Hand in hand, from today until always.',
+        objectPosition: '50% 14%',
+      },
     ],
     collageLeadPoem:
       'Có lẽ thế gian này có vô vàn điều tươi đẹp,\nNhưng trong lòng em, đẹp nhất vẫn chỉ có anh',
@@ -78,11 +84,6 @@ export const WEDDING_CONFIG: WeddingConfig = {
     collageInsetPhotoUrl: '/images/wedding/couple-cutout.png',
     collageSideVerse:
       'Mong gió xuân dịu dàng với em hơn,\nXua tan muộn phiền,\nĐể mọi thứ chỉ còn lại dịu êm.',
-    panoramaTopUrl: '/images/wedding/aodai-hands.jpg',
-    panoramaTopPosition: '50% 13%',
-    panoramaHeader: ['Fall in', 'love', 'Wedding'],
-    panoramaBottomUrl: '/images/wedding/polaroid-cover.jpg',
-    panoramaBottomPosition: '15% 50%',
     calendarVerse:
       'Đi một vòng lớn rồi vẫn gặp anh,\nTừ đó, thế gian bỗng hóa dịu dàng.',
     calendarPortraitUrl: '/images/wedding/uniform-main.jpg',
