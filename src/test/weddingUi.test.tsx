@@ -323,4 +323,63 @@ describe('Two-Page Soft Green Wedding Invitation & Cloud Parting Transition', ()
     expect(nameInput.value).toBe('Minh Anh');
     expect(messageInput.value).toBe('Chúc hai bạn mãi hạnh phúc!');
   });
+
+  it('preloads wishes on Page 1 mount and renders cached wishes immediately while refreshing', async () => {
+    const cachedWish = {
+      id: 'cached-1',
+      guestName: 'Khách Đã Cache',
+      side: 'both' as const,
+      attendance: 'attending' as const,
+      guestCount: 2,
+      message: 'Lời chúc hiển thị ngay từ cache!',
+      createdAt: '2026-11-23T09:00:00Z',
+    };
+    const freshWish = {
+      id: 'fresh-2',
+      guestName: 'Khách Mới Nhất',
+      side: 'both' as const,
+      attendance: 'attending' as const,
+      guestCount: 1,
+      message: 'Lời chúc vừa đồng bộ từ Sheet!',
+      createdAt: '2026-11-23T10:00:00Z',
+    };
+
+    let resolveGetAll!: (items: typeof freshWish[]) => void;
+    const pendingGetAll = new Promise<typeof freshWish[]>((resolve) => {
+      resolveGetAll = resolve;
+    });
+
+    const preloadSpy = vi.fn().mockResolvedValue([freshWish]);
+    const repo: IGuestbookRepository = {
+      preload: preloadSpy,
+      getCached: () => [cachedWish],
+      getAll: () => pendingGetAll,
+      submit: vi.fn(),
+    };
+
+    // Page 1 mount triggers preload immediately
+    const { unmount } = render(
+      <InvitationProvider services={{ guestbookRepo: repo }}>
+        <App />
+      </InvitationProvider>,
+    );
+    expect(preloadSpy).toHaveBeenCalledTimes(1);
+    unmount();
+
+    // Main page renders cached wish synchronously before getAll resolves
+    render(
+      <InvitationProvider services={{ guestbookRepo: repo }}>
+        <MainInvitationPage isPlaying={false} onToggleAudio={vi.fn()} />
+      </InvitationProvider>,
+    );
+    expect(screen.getAllByText('Khách Đã Cache').length).toBeGreaterThanOrEqual(1);
+
+    await act(async () => {
+      resolveGetAll([freshWish, cachedWish]);
+      await Promise.resolve();
+    });
+    expect(
+      await screen.findAllByText('Khách Mới Nhất'),
+    ).not.toHaveLength(0);
+  });
 });
