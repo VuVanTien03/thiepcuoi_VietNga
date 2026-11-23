@@ -166,9 +166,11 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
               aria-label={
                 isAutoScrolling ? 'Tạm dừng tự động cuộn' : 'Tự động cuộn thiệp'
               }
+              title={
+                isAutoScrolling ? 'Tạm dừng tự động cuộn' : 'Tự động cuộn thiệp'
+              }
             >
-              {isAutoScrolling ? <Pause size={14} /> : <Play size={14} />}
-              <span>{isAutoScrolling ? 'Đang tự cuộn' : 'Tự động cuộn'}</span>
+              {isAutoScrolling ? <Pause size={16} /> : <Play size={16} />}
             </button>
 
             <button

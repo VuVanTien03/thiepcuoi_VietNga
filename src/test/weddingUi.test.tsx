@@ -135,9 +135,9 @@ describe('Two-Page Soft Green Wedding Invitation & Cloud Parting Transition', ()
         expect(
         screen.getByTestId('falling-hearts-overlay').querySelectorAll('.falling-heart'),
         ).toHaveLength(6);
-        expect(
-        screen.getByRole('button', {name: /tự động cuộn/i }),
-        ).toBeInTheDocument();
+        const autoScrollBtn = screen.getByRole('button', { name: /tự động cuộn/i });
+        expect(autoScrollBtn).toBeInTheDocument();
+        expect(autoScrollBtn).toHaveTextContent('');
 
         // Filmstrip reel runs continuously, toggles pause/play, and pauses when lightbox opens
         const filmTrack = screen.getByTestId('filmstrip-track');
