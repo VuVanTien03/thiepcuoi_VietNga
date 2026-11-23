@@ -35,6 +35,7 @@ const CoupleMemberCard: React.FC<{
       <strong>{familyLabel}</strong>
       <div>{member.parents.father}</div>
       <div>{member.parents.mother}</div>
+      <div>{member.parents.address}</div>
     </div>
   </motion.article>
 );

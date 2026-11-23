@@ -151,6 +151,10 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
   };
 
   const ed = config.editorial;
+  const familySides = [
+    { sideLabel: 'Nhà Trai', member: config.groom },
+    { sideLabel: 'Nhà Gái', member: config.bride },
+  ] as const;
 
   return (
     <div className="feed-shell" aria-label="Nội dung thiệp cưới">
@@ -246,6 +250,33 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
                       <SageDividerOrnament />
                     </RevealMotion>
 
+                    <RevealMotion direction="slide-up" delay={0.14}>
+                      <div
+                        className="invite-schedule-grid"
+                        aria-label="Lịch trình hôn lễ"
+                      >
+                        {config.events.map((event) => (
+                          <div key={event.id} className="invite-schedule-card">
+                            <p className="invite-schedule-card__title">
+                              {event.title}
+                            </p>
+                            <p className="invite-schedule-card__time">
+                              {event.time}
+                            </p>
+                            <p className="invite-schedule-card__date">
+                              {event.solarDate}
+                            </p>
+                            <p className="invite-schedule-card__lunar">
+                              ({event.lunarDate})
+                            </p>
+                            <p className="invite-schedule-card__venue">
+                              {event.venueName}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </RevealMotion>
+
                     <RevealMotion direction="slide-up" delay={0.12}>
                       <p className="invite-block__venue-label">{ed.venueHeading}</p>
                       <p className="invite-block__venue-name">
@@ -266,6 +297,29 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
                         <MapPin size={16} />
                         Xem đường đi
                       </a>
+                    </RevealMotion>
+
+                    <RevealMotion direction="slide-up" delay={0.18}>
+                      <div
+                        className="invite-family-grid"
+                        aria-label="Thông tin hai gia đình"
+                      >
+                        {familySides.map(({ sideLabel, member }) => (
+                          <div key={member.role} className="invite-family-card">
+                            <p className="invite-family-card__side">{sideLabel}</p>
+                            <div className="invite-family-card__parents">
+                              <p>{member.parents.father}</p>
+                              <p>{member.parents.mother}</p>
+                            </div>
+                            <p className="invite-family-card__address">
+                              {member.parents.address}
+                            </p>
+                            <p className="invite-family-card__member">
+                              {member.fullName}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </RevealMotion>
 
                     <RevealMotion direction="slide-up" delay={0.2}>
@@ -315,55 +369,36 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
                     </RevealMotion>
 
                     <div className="couple-cards-grid">
-                      <RevealMotion
-                        direction="slide-right"
-                        delay={0.2}
-                        className="couple-portrait-card"
-                      >
-                        <img
-                          src={config.groom.avatarUrl}
-                          alt={config.groom.fullName}
-                          className="couple-portrait-card__img zoomable-photo"
-                          onClick={() =>
-                            setLightboxPhoto({
-                              url: config.groom.avatarUrl,
-                              caption: `${config.groom.title}: ${config.groom.fullName}`,
-                            })
-                          }
-                        />
-                        <span className="couple-portrait-card__bar" aria-hidden="true" />
-                        <p className="couple-portrait-card__name">
-                          {config.groom.shortName}
-                        </p>
-                        <p className="couple-portrait-card__role">
-                          {config.groom.title}
-                        </p>
-                      </RevealMotion>
-
-                      <RevealMotion
-                        direction="slide-left"
-                        delay={0.2}
-                        className="couple-portrait-card"
-                      >
-                        <img
-                          src={config.bride.avatarUrl}
-                          alt={config.bride.fullName}
-                          className="couple-portrait-card__img zoomable-photo"
-                          onClick={() =>
-                            setLightboxPhoto({
-                              url: config.bride.avatarUrl,
-                              caption: `${config.bride.title}: ${config.bride.fullName}`,
-                            })
-                          }
-                        />
-                        <span className="couple-portrait-card__bar" aria-hidden="true" />
-                        <p className="couple-portrait-card__name">
-                          {config.bride.shortName}
-                        </p>
-                        <p className="couple-portrait-card__role">
-                          {config.bride.title}
-                        </p>
-                      </RevealMotion>
+                      {familySides.map(({ member }, idx) => (
+                        <RevealMotion
+                          key={member.role}
+                          direction={idx === 0 ? 'slide-right' : 'slide-left'}
+                          delay={0.2}
+                          className="couple-portrait-card"
+                        >
+                          <img
+                            src={member.avatarUrl}
+                            alt={member.fullName}
+                            className="couple-portrait-card__img zoomable-photo"
+                            onClick={() =>
+                              setLightboxPhoto({
+                                url: member.avatarUrl,
+                                caption: `${member.title}: ${member.fullName}`,
+                              })
+                            }
+                          />
+                          <span
+                            className="couple-portrait-card__bar"
+                            aria-hidden="true"
+                          />
+                          <p className="couple-portrait-card__name">
+                            {member.fullName}
+                          </p>
+                          <p className="couple-portrait-card__role">
+                            {member.title}
+                          </p>
+                        </RevealMotion>
+                      ))}
                     </div>
                   </section>
 
@@ -483,6 +518,7 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
                               year={config.weddingYear}
                               month={config.weddingMonthNumber}
                               weddingDay={config.weddingDayOfMonth}
+                              weddingDays={config.weddingDays}
                             />
                           </div>
                         </div>

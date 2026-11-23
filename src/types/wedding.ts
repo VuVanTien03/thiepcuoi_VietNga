@@ -9,6 +9,7 @@ export interface ParentInfo {
   father: string;
   mother: string;
   address: string;
+  mapUrl?: string;
 }
 
 export interface CoupleMember {
@@ -168,6 +169,7 @@ export interface WeddingConfig {
   weddingDisplayDate: string;
   weddingMonthLabel: string;
   weddingDayOfMonth: number;
+  weddingDays?: number[];
   weddingMonthNumber: number;
   weddingYear: number;
   quote: string;

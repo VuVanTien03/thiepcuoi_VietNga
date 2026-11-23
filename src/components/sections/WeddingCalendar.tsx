@@ -16,8 +16,11 @@ const WEEKDAYS_MON_FIRST = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
 export function buildWeddingCalendarCells(
   year: number,
   month1Based: number,
-  weddingDay: number,
+  weddingDayOrDays: number | number[],
 ): CalendarCell[] {
+  const highlightedDays = new Set(
+    Array.isArray(weddingDayOrDays) ? weddingDayOrDays : [weddingDayOrDays],
+  );
   const firstJsDay = new Date(year, month1Based - 1, 1).getDay(); // 0=CN, 1=T2 ... 6=T7
   const leadingEmpty = (firstJsDay + 6) % 7;
   const totalDays = new Date(year, month1Based, 0).getDate();
@@ -35,7 +38,7 @@ export function buildWeddingCalendarCells(
     cells.push({
       key: `day-${d}`,
       day: d,
-      isWeddingDay: d === weddingDay,
+      isWeddingDay: highlightedDays.has(d),
     });
   }
 
@@ -46,6 +49,7 @@ interface WeddingCalendarProps {
   year: number;
   month: number;
   weddingDay: number;
+  weddingDays?: number[];
 }
 
 /**
@@ -56,10 +60,12 @@ export const WeddingCalendar: React.FC<WeddingCalendarProps> = ({
   year,
   month,
   weddingDay,
+  weddingDays,
 }) => {
+  const targetDays = weddingDays?.length ? weddingDays : weddingDay;
   const cells = useMemo(
-    () => buildWeddingCalendarCells(year, month, weddingDay),
-    [year, month, weddingDay],
+    () => buildWeddingCalendarCells(year, month, targetDays),
+    [year, month, targetDays],
   );
 
   return (

@@ -2,7 +2,7 @@ import { defineConfig } from 'vitest/config';
 import { loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 
-const OG_IMAGE_PATH = '/images/og-invitation.jpg?v=20261122';
+const OG_IMAGE_PATH = '/images/og-invitation.jpg?v=20261226';
 
 /**
  * Injects absolute Open Graph / canonical URLs into index.html when VITE_SITE_URL is configured
