@@ -15,13 +15,13 @@ export const BlessingMarquee: React.FC<BlessingMarqueeProps> = ({
   visible,
 }) => {
   const copyRef = useRef<HTMLDivElement | null>(null);
-  const [trackHeight, setTrackHeight] = useState(140);
+  const [trackHeight, setTrackHeight] = useState(96);
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const node = copyRef.current;
     if (!node) return;
-    const update = () => setTrackHeight(Math.max(120, node.offsetHeight));
+    const update = () => setTrackHeight(Math.max(72, node.offsetHeight));
     update();
     if (typeof ResizeObserver === 'undefined') return;
     const ro = new ResizeObserver(update);
@@ -31,7 +31,7 @@ export const BlessingMarquee: React.FC<BlessingMarqueeProps> = ({
 
   if (!visible || wishes.length === 0) return null;
 
-  const durationSec = Math.max(8, trackHeight / 28);
+  const durationSec = Math.max(7, trackHeight / 24);
 
   return (
     <div
