@@ -43,7 +43,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     openingWarmNote:
       'Gửi đến bạn tấm thiệp cưới đầy yêu thương.\nNhững ai nhận được lời mời này đều là những người đặc biệt với bọn mình.\nMong bạn và gia đình sẽ đến chung vui,\nCùng chứng kiến khoảnh khắc hạnh phúc nhất của hai đứa.\nCảm ơn vì luôn bên cạnh và yêu thương.\nBọn mình rất mong được gặp bạn trong ngày vui này! 💚',
     bannerHeader: ['FALL IN', 'LOVE', 'WEDDING'],
-    bannerImageUrl: '/images/wedding/banner-garden-smile.jpg',
+    bannerImageUrl: '/images/wedding/studio-suit.jpg',
     bannerCaption:
       'As the clouds and mist dissipate, I love you and everyone knows it',
     thankYouParagraph:
@@ -78,9 +78,11 @@ export const WEDDING_CONFIG: WeddingConfig = {
     collageInsetPhotoUrl: '/images/wedding/couple-cutout.png',
     collageSideVerse:
       'Mong gió xuân dịu dàng với em hơn,\nXua tan muộn phiền,\nĐể mọi thứ chỉ còn lại dịu êm.',
-    panoramaTopUrl: '/images/wedding/panorama-aodai-hands.jpg',
+    panoramaTopUrl: '/images/wedding/aodai-hands.jpg',
+    panoramaTopPosition: '50% 13%',
     panoramaHeader: ['Fall in', 'love', 'Wedding'],
-    panoramaBottomUrl: '/images/wedding/panorama-uniform-closeup.jpg',
+    panoramaBottomUrl: '/images/wedding/polaroid-cover.jpg',
+    panoramaBottomPosition: '15% 50%',
     calendarVerse:
       'Đi một vòng lớn rồi vẫn gặp anh,\nTừ đó, thế gian bỗng hóa dịu dàng.',
     calendarPortraitUrl: '/images/wedding/uniform-main.jpg',

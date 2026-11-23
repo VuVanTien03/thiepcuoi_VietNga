@@ -24,13 +24,15 @@
   color: var(--ink-forest);
 }
 
-.editorial-triad > :first-child {
+.editorial-triad> :first-child {
   text-align: left;
 }
-.editorial-triad > :nth-child(2) {
+
+.editorial-triad> :nth-child(2) {
   text-align: center;
 }
-.editorial-triad > :last-child {
+
+.editorial-triad> :last-child {
   text-align: right;
 }
 
@@ -260,13 +262,14 @@
   background: var(--film-charcoal);
   padding: 24px 0 10px;
   color: #ffffff;
+  overflow: hidden;
 }
 
 .banner-band__photo {
   width: 100%;
-  aspect-ratio: 500 / 252;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
-  object-position: 50% 42%;
+  object-position: 50% 82%;
 }
 
 .banner-band__caption {
@@ -420,6 +423,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -439,10 +443,13 @@
 }
 
 @keyframes filmDotPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.45;
     transform: scale(0.8);
@@ -491,6 +498,7 @@
   from {
     transform: translate3d(0, 0, 0);
   }
+
   to {
     transform: translate3d(0, -50%, 0);
   }
@@ -517,14 +525,12 @@
   right: 52px;
   bottom: 5.5px;
   height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(220, 234, 215, 0.16) 24%,
-    rgba(220, 234, 215, 0.24) 50%,
-    rgba(220, 234, 215, 0.16) 76%,
-    transparent
-  );
+  background: linear-gradient(to right,
+      transparent,
+      rgba(220, 234, 215, 0.16) 24%,
+      rgba(220, 234, 215, 0.24) 50%,
+      rgba(220, 234, 215, 0.16) 76%,
+      transparent);
   pointer-events: none;
 }
 
@@ -637,9 +643,12 @@
 }
 
 @keyframes filmFrameDrift {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1) translate3d(0, 0, 0);
   }
+
   50% {
     transform: scale(1.045) translate3d(-0.5%, -0.5%, 0);
   }
@@ -692,19 +701,15 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(
-      ellipse at 50% 50%,
+    radial-gradient(ellipse at 50% 50%,
       rgba(255, 252, 242, 0.045) 0%,
       transparent 66%,
-      rgba(10, 16, 11, 0.28) 100%
-    ),
-    repeating-linear-gradient(
-      to bottom,
+      rgba(10, 16, 11, 0.28) 100%),
+    repeating-linear-gradient(to bottom,
       rgba(255, 255, 255, 0.015) 0px,
       rgba(255, 255, 255, 0.015) 1px,
       transparent 1px,
-      transparent 3px
-    );
+      transparent 3px);
   pointer-events: none;
   z-index: 2;
 }
@@ -934,13 +939,13 @@
 
 .panorama-split__img {
   width: 100%;
-  aspect-ratio: 500 / 261;
+  aspect-ratio: 5 / 4;
   object-fit: cover;
-  object-position: 50% 45%;
+  object-position: 50% 25%;
 }
 
 .panorama-split__mid {
-  padding: 10px 0;
+  padding: 14px 0;
 }
 
 /* 9. Save The Date Polaroid Arch & Calendar */
@@ -986,12 +991,10 @@
 .calendar-arch-scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(24, 34, 25, 0) 32%,
-    rgba(24, 34, 25, 0.45) 56%,
-    rgba(20, 30, 21, 0.86) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(24, 34, 25, 0) 32%,
+      rgba(24, 34, 25, 0.45) 56%,
+      rgba(20, 30, 21, 0.86) 100%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -1089,11 +1092,9 @@
   left: 0;
   right: 0;
   padding: 20px 0 32px;
-  background: linear-gradient(
-    to bottom,
-    rgba(24, 34, 25, 0.44) 0%,
-    rgba(24, 34, 25, 0) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(24, 34, 25, 0.44) 0%,
+      rgba(24, 34, 25, 0) 100%);
   pointer-events: none;
   z-index: 2;
 }
@@ -1132,10 +1133,25 @@
 }
 
 @keyframes giftWobble {
-  0%, 100% { transform: rotate(0deg) scale(1); }
-  12%, 28% { transform: rotate(-4deg) scale(1.04); }
-  20%, 36% { transform: rotate(4deg) scale(1.04); }
-  45% { transform: rotate(0deg) scale(1); }
+
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  12%,
+  28% {
+    transform: rotate(-4deg) scale(1.04);
+  }
+
+  20%,
+  36% {
+    transform: rotate(4deg) scale(1.04);
+  }
+
+  45% {
+    transform: rotate(0deg) scale(1);
+  }
 }
 
 .gift-trigger-btn__label {
@@ -1467,8 +1483,15 @@
 }
 
 @keyframes gentlePromptBob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 .hero-cover__bouquet-left-top img,
@@ -1487,8 +1510,15 @@
 }
 
 @keyframes bouquetBreeze {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(2.6deg); }
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(2.6deg);
+  }
 }
 
 /* Lightbox Modal */
@@ -1539,13 +1569,16 @@
     grid-template-columns: 54% minmax(0, 1fr);
     gap: 6px;
   }
+
   .collage-photo-inset {
     margin-top: -108px;
     padding: 0;
   }
+
   .countdown-tiles {
     gap: 8px;
   }
+
   .gift-account-card {
     grid-template-columns: 1fr;
     text-align: center;

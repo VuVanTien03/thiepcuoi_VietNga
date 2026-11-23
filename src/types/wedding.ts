@@ -149,8 +149,10 @@ export interface EditorialCopyConfig {
   collageInsetPhotoUrl: string;
   collageSideVerse: string;
   panoramaTopUrl: string;
+  panoramaTopPosition?: string;
   panoramaHeader: [string, string, string];
   panoramaBottomUrl: string;
+  panoramaBottomPosition?: string;
   calendarVerse: string;
   calendarPortraitUrl: string;
   calendarFooterLine: string;
