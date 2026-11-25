@@ -230,6 +230,8 @@ export interface ICountdownService {
 }
 
 export interface IGuestbookRepository {
+  getCached?(seedWishes: GuestWish[]): GuestWish[];
+  preload?(seedWishes: GuestWish[]): Promise<GuestWish[]>;
   getAll(seedWishes: GuestWish[]): Promise<GuestWish[]>;
   submit(entry: RsvpSubmission): Promise<GuestWish>;
 }

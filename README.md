@@ -23,6 +23,7 @@ Dự án React + TypeScript thiết kế theo nguyên lý **SOLID**, tách biệ
 5. Tạo file `.env` từ `.env.example`, dán URL vào biến `VITE_GOOGLE_SHEETS_URL=https://script.google.com/macros/s/.../exec`, sau đó chạy `npm run build` trước khi deploy.
    - Tab `RSVP` trên Sheet tự động tạo đủ cột và có cột **Hiển thị** (`TRUE` mặc định; đổi thành `FALSE` nếu muốn ẩn lời chúc nào trên web).
    - Khi khách chọn không tham dự, cột **Số người** ghi `0` để công thức tổng khách chính xác.
+   - Script có tích hợp `CacheService` (cache danh sách lời chúc 60 giây khi đọc và tự xóa cache khi có khách gửi mới). Nếu cập nhật code script, hãy chọn **Triển khai → Quản lý triển khai → Chỉnh sửa (biểu tượng bút) → Phiên bản mới (New version)**. Có thể gắn thêm Time-driven Trigger chạy hàm `warmup()` mỗi 5–10 phút nếu muốn giảm cold-start.
 
 ## Chạy Dự Án
 ```bash

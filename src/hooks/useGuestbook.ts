@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInvitationContext } from '../context/InvitationContext';
 import { GuestWish, RsvpSubmission } from '../types/wedding';
 
@@ -18,7 +18,10 @@ export function useGuestbook(): UseGuestbookReturn {
     services: { guestbookRepo },
   } = useInvitationContext();
 
-  const [wishes, setWishes] = useState<GuestWish[]>(config.initialWishes);
+  const [wishes, setWishes] = useState<GuestWish[]>(
+    () => guestbookRepo.getCached?.(config.initialWishes) ?? config.initialWishes,
+  );
+  const submittedLocallyRef = useRef<GuestWish[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,9 +32,11 @@ export function useGuestbook(): UseGuestbookReturn {
     guestbookRepo
       .getAll(config.initialWishes)
       .then((items) => {
-        if (active) {
-          setWishes(items);
-        }
+        if (!active) return;
+        const localUnsynced = submittedLocallyRef.current.filter(
+          (local) => !items.some((remote) => remote.id === local.id),
+        );
+        setWishes([...localUnsynced, ...items]);
       })
       .finally(() => {
         if (active) {
@@ -44,29 +49,33 @@ export function useGuestbook(): UseGuestbookReturn {
   }, [config.initialWishes, guestbookRepo]);
 
   const submitRsvp = useCallback(
-      async (entry: RsvpSubmission): Promise<boolean> => {
-        setError(null);
-        setIsSubmitting(true);
-        try {
-          const created = await guestbookRepo.submit(entry);
-          setWishes((prev) => [
-            created,
-            ...prev.filter((item) => item.id !== created.id),
-          ]);
-          setSubmittedSuccess(true);
-          return true;
-        } catch (err) {
-          setError(
-            err instanceof Error
-              ? err.message
-              : 'Không thể gửi xác nhận. Vui lòng thử lại.',
-          );
-          return false;
-        } finally {
-          setIsSubmitting(false);
-        }
-      },
-        [guestbookRepo],
+        async (entry: RsvpSubmission): Promise<boolean> => {
+          setError(null);
+          setIsSubmitting(true);
+          try {
+            const created = await guestbookRepo.submit(entry);
+            submittedLocallyRef.current = [
+              created,
+              ...submittedLocallyRef.current.filter((item) => item.id !== created.id),
+            ];
+            setWishes((prev) => [
+              created,
+              ...prev.filter((item) => item.id !== created.id),
+            ]);
+            setSubmittedSuccess(true);
+            return true;
+          } catch (err) {
+            setError(
+              err instanceof Error
+                ? err.message
+                : 'Không thể gửi xác nhận. Vui lòng thử lại.',
+            );
+            return false;
+          } finally {
+            setIsSubmitting(false);
+          }
+        },
+          [guestbookRepo],
   );
 
   const resetSuccess = useCallback(() => {

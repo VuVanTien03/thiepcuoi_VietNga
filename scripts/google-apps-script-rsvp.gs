@@ -18,6 +18,8 @@ var TIMEZONE = 'Asia/Ho_Chi_Minh';
 var NOTIFY_EMAIL = '';
 var DUPLICATE_WINDOW_MS = 10000;
 var DEFAULT_MESSAGE = 'Chúc hai bạn trăm năm hạnh phúc viên mãn!';
+var WISHES_CACHE_KEY = 'rsvp_wishes_v1';
+var WISHES_CACHE_TTL_SEC = 60;
 
 var HEADERS = [
   'ID',
@@ -44,6 +46,14 @@ var VI_TO_ATTENDANCE = {
 
 function doGet() {
   try {
+    var cache = CacheService.getScriptCache();
+    var cachedJson = cache.get(WISHES_CACHE_KEY);
+    if (cachedJson) {
+      return ContentService
+        .createTextOutput(cachedJson)
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
     var sheet = getOrCreateRsvpSheet();
     var lastRow = sheet.getLastRow();
     var wishes = [];
@@ -82,7 +92,18 @@ function doGet() {
       return Date.parse(b.createdAt) - Date.parse(a.createdAt);
     });
 
-    return jsonResponse({ ok: true, wishes: wishes });
+    var jsonPayload = JSON.stringify({ ok: true, wishes: wishes });
+    try {
+      if (jsonPayload.length < 95000) {
+        cache.put(WISHES_CACHE_KEY, jsonPayload, WISHES_CACHE_TTL_SEC);
+      }
+    } catch (cacheErr) {
+      // Bỏ qua nếu vượt giới hạn kích thước cache của Apps Script
+    }
+
+    return ContentService
+      .createTextOutput(jsonPayload)
+      .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return jsonResponse({
       ok: false,
@@ -137,6 +158,11 @@ function doPost(e) {
       createdAtIso,
     ]]);
     SpreadsheetApp.flush();
+    try {
+      CacheService.getScriptCache().remove(WISHES_CACHE_KEY);
+    } catch (cacheErr) {
+      // Bỏ qua lỗi xóa cache
+    }
 
     sendNotificationEmail({
       guestName: guestName,
@@ -270,4 +296,12 @@ function jsonResponse(data) {
   return ContentService
     .createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * (Tùy chọn) Gắn Trigger theo thời gian (mỗi 5 hoặc 10 phút) gọi hàm này
+ * để giữ Apps Script luôn nóng và làm mới cache trước khi khách mở thiệp.
+ */
+function warmup() {
+  doGet();
 }

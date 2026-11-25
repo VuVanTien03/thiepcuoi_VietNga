@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useMemo } from 'react';
 import { THEME_CONFIG } from '../config/theme.config';
 import { WEDDING_CONFIG } from '../config/wedding.config';
 import { WeddingAudioService } from '../services/audio.service';
@@ -56,23 +56,29 @@ export const InvitationProvider: React.FC<InvitationProviderProps> = ({
     const resolvedServices: InvitationServices = {
       countdownService: services?.countdownService ?? new CountdownService(),
       guestbookRepo:
-      services?.guestbookRepo ?? createGuestbookRepository(sheetsEndpoint),
+        services?.guestbookRepo ?? createGuestbookRepository(sheetsEndpoint),
       calendarService: services?.calendarService ?? new CalendarService(),
-          audioService: services?.audioService ?? new WeddingAudioService(),
+      audioService: services?.audioService ?? new WeddingAudioService(),
     };
 
-  return {
-    config,
-    theme,
-    services: resolvedServices,
-  };
-}, [config, theme, services]);
+    return {
+      config,
+      theme,
+      services: resolvedServices,
+    };
+  }, [config, theme, services]);
 
-return (
-  <InvitationContext.Provider value={value}>
-    {children}
-  </InvitationContext.Provider>
-);
+  useEffect(() => {
+    void value.services.guestbookRepo
+      .preload?.(value.config.initialWishes)
+      .catch(() => undefined);
+  }, [value]);
+
+  return (
+    <InvitationContext.Provider value={value}>
+      {children}
+    </InvitationContext.Provider>
+  );
 };
 
 export function useInvitationContext(): InvitationContextValue {

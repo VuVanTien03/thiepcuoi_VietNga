@@ -255,6 +255,112 @@ describe('GoogleSheetsGuestbookRepository & createGuestbookRepository', () => {
       vi.unstubAllGlobals();
     }
   });
+
+  it('deduplicates concurrent preload/getAll requests, reuses fresh snapshot, and invalidates on submit', async () => {
+    window.localStorage.clear();
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          ok: true,
+          wishes: [
+            {
+              id: 'sheet-preload-1',
+              guestName: 'Gia Huy',
+              side: 'both',
+              attendance: 'attending',
+              guestCount: 1,
+              message: 'Chúc mừng hai bạn!',
+              createdAt: '2026-11-23T08:00:00Z',
+            },
+          ],
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          ok: true,
+          wish: {
+            id: 'sheet-post-2',
+            guestName: 'Thanh Vân',
+            side: 'both',
+            attendance: 'attending',
+            guestCount: 2,
+            message: 'Mãi hạnh phúc nhé!',
+            createdAt: '2026-11-23T09:00:00Z',
+          },
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          ok: true,
+          wishes: [
+            {
+              id: 'sheet-post-2',
+              guestName: 'Thanh Vân',
+              side: 'both',
+              attendance: 'attending',
+              guestCount: 2,
+              message: 'Mãi hạnh phúc nhé!',
+              createdAt: '2026-11-23T09:00:00Z',
+            },
+            {
+              id: 'sheet-preload-1',
+              guestName: 'Gia Huy',
+              side: 'both',
+              attendance: 'attending',
+              guestCount: 1,
+              message: 'Chúc mừng hai bạn!',
+              createdAt: '2026-11-23T08:00:00Z',
+            },
+          ],
+        }),
+      });
+    vi.stubGlobal('fetch', fetchMock);
+
+    try {
+      const repo = new GoogleSheetsGuestbookRepository(
+        endpoint,
+        'test_sheets_preload_1',
+      );
+      // Returns seed synchronously before cache is populated
+      expect(repo.getCached([seedWish])).toEqual([seedWish]);
+
+      // Concurrent preload + getAll share 1 HTTP GET call
+      const [preloaded, concurrent] = await Promise.all([
+        repo.preload([seedWish]),
+        repo.getAll([seedWish]),
+      ]);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(preloaded[0].guestName).toBe('Gia Huy');
+      expect(concurrent[0].guestName).toBe('Gia Huy');
+
+      // Synchronous getCached now returns warm wishes immediately
+      expect(repo.getCached([seedWish])[0].guestName).toBe('Gia Huy');
+
+      // Subsequent getAll within TTL reuses fresh snapshot without extra GET
+      const reused = await repo.getAll([seedWish]);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(reused[0].guestName).toBe('Gia Huy');
+
+      // Submitting invalidates fresh TTL cache so next getAll fetches latest Sheet data
+      await repo.submit({
+        guestName: 'Thanh Vân',
+        side: 'both',
+        attendance: 'attending',
+        guestCount: 2,
+        message: 'Mãi hạnh phúc nhé!',
+      });
+      const refreshed = await repo.getAll([seedWish]);
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+      expect(refreshed).toHaveLength(2);
+      expect(refreshed[0].guestName).toBe('Thanh Vân');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
 });
 
 describe('WeddingAudioService', () => {
