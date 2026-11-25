@@ -7,10 +7,10 @@ export const WEDDING_CONFIG: WeddingConfig = {
   coupleTitle: 'Quốc Việt & Thu Ngà',
   hashtag: '#VietNga2026',
   weddingDateIso: '2026-12-26T16:30:00+07:00',
-  weddingDisplayDate: '26 . 12 . 2026',
+  weddingDisplayDate: '27 . 12 . 2026',
   weddingMonthLabel: 'Tháng 12, 2026',
-  weddingDayOfMonth: 26,
-  weddingDays: [26, 27],
+  weddingDayOfMonth: 27,
+  weddingDays: [27],
   weddingMonthNumber: 12,
   weddingYear: 2026,
   quote:
@@ -22,10 +22,10 @@ export const WEDDING_CONFIG: WeddingConfig = {
     invitationLine: 'Trân trọng kính mời',
     tapPrompt: 'Chạm để mở thiệp',
     openedPrompt: 'Đã mở thiệp ♥ Cuộn xuống xem chi tiết',
-    recipientPlaceholder: 'Quý khách & Gia đình',
+    recipientPlaceholder: 'Bạn & Người thương',
     emergingPolaroidUrl: '/images/wedding/polaroid-cover.jpg',
-    emergingPolaroidCaption: 'Save Our Date — 26.12.2026',
-    emergingDateStamp: 'THỨ BẢY • 26 THÁNG 12',
+    emergingPolaroidCaption: 'Save Our Date — 27.12.2026',
+    emergingDateStamp: 'CHỦ NHẬT • 27 THÁNG 12',
   },
 
   editorial: {
@@ -33,7 +33,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     scriptHeadline: 'Wedding Invitation',
     invitationHeading: 'TRÂN TRỌNG KÍNH MỜI',
     invitationSubheading:
-    'ĐẾN DỰ BỮA TIỆC CHUNG VUI\nCÙNG GIA ĐÌNH CHÚNG TÔI VÀO LÚC',
+      'ĐẾN DỰ BỮA TIỆC CHUNG VUI\nCÙNG GIA ĐÌNH CHÚNG TÔI VÀO LÚC',
     ceremonyHeadline: '16 GIỜ 30 | THỨ BẢY | 26.12.2026',
     ceremonyDateLine: 'Thứ Bảy, 26/12/2026',
     ceremonyLunarLine: '(Nhằm ngày 18 tháng 11 năm Bính Ngọ)',
@@ -41,7 +41,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     primaryVenueTitle: 'TƯ GIA NHÀ GÁI',
     primaryVenueAddress: 'Thôn Đặng Xuyên, Xã Nguyễn Trãi, Tỉnh Hưng Yên',
     primaryVenueMapUrl:
-      'https://maps.google.com/?q=Th%C3%B4n+%C4%90%E1%BA%B7ng+Xuy%C3%AAn,+X%C3%A3+Nguy%E1%BB%85n+Tr%C3%A3i,+T%E1%BB%89nh+H%C6%B0ng+Y%C3%AAn',
+    'https://maps.google.com/?q=20.784556,106.074389',
     openingWarmNote:
       'Gửi đến bạn tấm thiệp cưới đầy yêu thương.\nNhững ai nhận được lời mời này đều là những người đặc biệt với bọn mình.\nMong bạn và gia đình sẽ đến chung vui,\nCùng chứng kiến khoảnh khắc hạnh phúc nhất của hai đứa.\nCảm ơn vì luôn bên cạnh và yêu thương.\nBọn mình rất mong được gặp bạn trong ngày vui này! 💚',
     bannerHeader: ['FALL IN', 'LOVE', 'WEDDING'],
@@ -89,8 +89,8 @@ export const WEDDING_CONFIG: WeddingConfig = {
     calendarVerse:
       'Đi một vòng lớn rồi vẫn gặp anh,\nTừ đó, thế gian bỗng hóa dịu dàng.',
     calendarPortraitUrl: '/images/wedding/uniform-main.jpg',
-    calendarFooterLine: '26 – 27 Tháng 12, 2026',
-    calendarFooterTimeLine: '18–19/11 Âm lịch · Bữa tiệc 16:30 · Hôn lễ 12:05',
+    calendarFooterLine: 'Chủ Nhật, 27/12/2026',
+    calendarFooterTimeLine: 'Âm lịch 19/11 · Hôn lễ 12:05',
     closingPoemTop:
       'Hạnh phúc lớn nhất chính là được nắm tay anh,\nCùng nhau đi hết cuộc đời lãng mạn này',
     closingFeaturePhotoUrl: '/images/wedding/garden-kiss.jpg',
@@ -100,7 +100,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     giftTitle: 'Hộp quà cưới',
     giftModalTitle: 'Hộp Quà Yêu Thương',
     feedDescription:
-    'Thiệp mời cưới trực tuyến tông xanh lá nhẹ nhàng & hoa cúc trắng — Trân trọng kính mời bạn đến chung vui cùng Nguyễn Quốc Việt & Vũ Thị Thu Ngà ngày 26–27.12.2026 tại Hưng Yên.',
+      'Thiệp mời cưới trực tuyến tông xanh lá nhẹ nhàng & hoa cúc trắng — Trân trọng kính mời bạn đến chung vui cùng Nguyễn Quốc Việt & Vũ Thị Thu Ngà ngày 26–27.12.2026 tại Hưng Yên.',
   },
 
   groom: {
@@ -133,7 +133,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
       mother: 'Bà Nguyễn Thị Thắng',
       address: 'Thôn Đặng Xuyên, Xã Nguyễn Trãi, Tỉnh Hưng Yên',
       mapUrl:
-        'https://maps.google.com/?q=Th%C3%B4n+%C4%90%E1%BA%B7ng+Xuy%C3%AAn,+X%C3%A3+Nguy%E1%BB%85n+Tr%C3%A3i,+T%E1%BB%89nh+H%C6%B0ng+Y%C3%AAn',
+      'https://maps.google.com/?q=20.784556,106.074389',
     },
   },
 
@@ -148,7 +148,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
       venueName: 'Tư Gia Nhà Gái',
       address: 'Thôn Đặng Xuyên, Xã Nguyễn Trãi, Tỉnh Hưng Yên',
       mapUrl:
-        'https://maps.google.com/?q=Th%C3%B4n+%C4%90%E1%BA%B7ng+Xuy%C3%AAn,+X%C3%A3+Nguy%E1%BB%85n+Tr%C3%A3i,+T%E1%BB%89nh+H%C6%B0ng+Y%C3%AAn',
+      'https://maps.google.com/?q=20.784556,106.074389',
       isoStart: '2026-12-26T16:30:00+07:00',
       isoEnd: '2026-12-26T19:30:00+07:00',
       accentIcon: 'wine',
@@ -163,7 +163,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
       venueName: 'Tư Gia Nhà Gái',
       address: 'Thôn Đặng Xuyên, Xã Nguyễn Trãi, Tỉnh Hưng Yên',
       mapUrl:
-        'https://maps.google.com/?q=Th%C3%B4n+%C4%90%E1%BA%B7ng+Xuy%C3%AAn,+X%C3%A3+Nguy%E1%BB%85n+Tr%C3%A3i,+T%E1%BB%89nh+H%C6%B0ng+Y%C3%AAn',
+      'https://maps.google.com/?q=20.784556,106.074389',
       isoStart: '2026-12-27T12:05:00+07:00',
       isoEnd: '2026-12-27T14:00:00+07:00',
       accentIcon: 'rings',
@@ -275,7 +275,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
       attendance: 'attending',
       guestCount: 1,
       message:
-      'Thiệp xanh lá hoa cúc dịu nhẹ xinh quá! Hẹn gặp hai em ở Hưng Yên ngày 26/12 nhé.',
+        'Thiệp xanh lá hoa cúc dịu nhẹ xinh quá! Hẹn gặp hai em ở Hưng Yên ngày 26/12 nhé.',
       createdAt: '2026-11-19T14:40:00+07:00',
     },
   ],

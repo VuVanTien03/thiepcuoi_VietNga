@@ -161,10 +161,11 @@ describe('Two-Page Soft Green Wedding Invitation & Cloud Parting Transition', ()
     expect(
       screen.getAllByText('Vũ Thị Thu Ngà').length,
     ).toBeGreaterThanOrEqual(2);
-    expect(
-      screen.getByRole('grid', { name: 'Lịch Tháng 12 năm 2026' })
-        .querySelectorAll('[aria-selected="true"]'),
-    ).toHaveLength(2);
+    const selectedCalendarCells = screen
+      .getByRole('grid', { name: 'Lịch Tháng 12 năm 2026' })
+      .querySelectorAll('[aria-selected="true"]');
+    expect(selectedCalendarCells).toHaveLength(1);
+    expect(selectedCalendarCells[0]).toHaveTextContent('27');
     expect(screen.getByLabelText('Lời chúc nổi bật')).toBeInTheDocument();
     expect(
       screen.getByTestId('falling-hearts-overlay').querySelectorAll('.falling-heart'),
