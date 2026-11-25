@@ -112,7 +112,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     bio: 'Chàng trai yêu nhiếp ảnh phim, cà phê sáng cuối tuần và luôn giữ nụ cười dịu dàng dành riêng cho cô dâu.',
     avatarUrl: '/images/wedding/groom-solo.jpg',
     parents: {
-      father: 'Ông Nguyễn Tiến Trường',
+      father: 'Ông Nguyễn Văn Trường',
       mother: 'Bà Nguyễn Thị Ngọc Băng',
       address: 'Thôn Đan Tràng, Xã Hồng Quang, Tỉnh Hưng Yên',
       mapUrl:

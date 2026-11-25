@@ -147,7 +147,7 @@ describe('Two-Page Soft Green Wedding Invitation & Cloud Parting Transition', ()
     expect(screen.getByText('Hôn Lễ')).toBeInTheDocument();
     expect(screen.getByText('Ông Vũ Văn Chín')).toBeInTheDocument();
     expect(screen.getByText('Bà Nguyễn Thị Thắng')).toBeInTheDocument();
-    expect(screen.getByText('Ông Nguyễn Tiến Trường')).toBeInTheDocument();
+    expect(screen.getByText('Ông Nguyễn Văn Trường')).toBeInTheDocument();
     expect(screen.getByText('Bà Nguyễn Thị Ngọc Băng')).toBeInTheDocument();
     expect(
       screen.getAllByText('Thôn Đặng Xuyên, Xã Nguyễn Trãi, Tỉnh Hưng Yên').length,
