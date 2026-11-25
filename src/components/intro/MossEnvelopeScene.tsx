@@ -135,35 +135,35 @@ export const MossEnvelopeScene: React.FC<MossEnvelopeSceneProps> = ({
         onKeyDown={
           isIdle
             ? (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  onOpen();
-                }
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onOpen();
               }
+            }
             : undefined
         }
         animate={
           isIdle
             ? {
-                y: [0, -11, 0],
-                rotate: [-0.6, 0.6, -0.6],
-              }
+              y: [0, -11, 0],
+              rotate: [-0.6, 0.6, -0.6],
+            }
             : {
-                y: 44,
-                rotate: 0,
-              }
+              y: 44,
+              rotate: 0,
+            }
         }
         transition={
           isIdle
             ? {
-                duration: 3.6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }
+              duration: 3.6,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }
             : {
-                duration: 0.8,
-                ease: [0.22, 1, 0.36, 1],
-              }
+              duration: 0.8,
+              ease: [0.22, 1, 0.36, 1],
+            }
         }
         whileHover={isIdle ? { scale: 1.025 } : undefined}
         whileTap={isIdle ? { scale: 0.985 } : undefined}
@@ -308,7 +308,7 @@ export const MossEnvelopeScene: React.FC<MossEnvelopeSceneProps> = ({
       >
         <p className="intro-prompt__text">{config.envelope.tapPrompt}</p>
         <p className="intro-prompt__recipient">
-          Kính gửi: {guestName || config.envelope.recipientPlaceholder}
+          Kính mời: {guestName || config.envelope.recipientPlaceholder}
         </p>
       </motion.div>
     </motion.section>
