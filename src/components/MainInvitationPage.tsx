@@ -641,7 +641,7 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
               <span className="feed-rail__icon feed-rail__icon--gift">
                 <Gift size={20} />
               </span>
-              <span className="feed-rail__label">Mừng cưới</span>
+              <span className="feed-rail__label">Quà bí mật</span>
             </button>
 
             <button
@@ -708,7 +708,8 @@ export const MainInvitationPage: React.FC<MainInvitationPageProps> = ({
         isOpen={giftModalOpen}
         onClose={() => setGiftModalOpen(false)}
         title={ed.giftModalTitle}
-        accounts={config.giftAccounts}
+        cards={config.surpriseCards ?? []}
+        coupleSignature={config.coupleTitle}
       />
 
       <MobileWishesModal

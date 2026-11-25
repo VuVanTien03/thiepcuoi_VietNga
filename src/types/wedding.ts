@@ -73,6 +73,14 @@ export interface GiftAccount {
   qrNote: string;
 }
 
+export interface SurpriseCardItem {
+  id: string;
+  badge: string;
+  title: string;
+  message: string;
+  imageUrl?: string;
+}
+
 export type AttendanceStatus = 'attending' | 'not-attending' | 'maybe';
 export type GuestSide = 'groom' | 'bride' | 'both';
 
@@ -182,6 +190,7 @@ export interface WeddingConfig {
   story: StoryMilestone[];
   gallery: PolaroidPhoto[];
   giftAccounts: GiftAccount[];
+  surpriseCards?: SurpriseCardItem[];
   initialWishes: GuestWish[];
   audioTitle: string;
   audioUrl?: string;

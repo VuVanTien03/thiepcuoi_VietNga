@@ -211,10 +211,24 @@ describe('Two-Page Soft Green Wedding Invitation & Cloud Parting Transition', ()
       screen.getByRole('button', { name: /Thả tim chúc phúc \(89\)/i }),
     ).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Hộp quà cưới' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Hộp quà bí mật' }));
     expect(
-      screen.getByRole('dialog', { name: 'Hộp Quà Yêu Thương' }),
+      screen.getByRole('dialog', { name: 'Lì Xì Lời Cảm Ơn & Kỷ Niệm' }),
     ).toBeInTheDocument();
+    expect(screen.queryByText(/Sao chép số tài khoản/i)).not.toBeInTheDocument();
+
+    const firstCardTitle =
+      screen.getByTestId('gift-surprise-card').querySelector('h4')?.textContent;
+    expect(firstCardTitle).toBeTruthy();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Mở thẻ bất ngờ khác' }),
+    );
+    const secondCardTitle =
+      screen.getByTestId('gift-surprise-card').querySelector('h4')?.textContent;
+    expect(secondCardTitle).toBeTruthy();
+    expect(secondCardTitle).not.toBe(firstCardTitle);
+
     fireEvent.click(screen.getByRole('button', { name: 'Đóng hộp quà cưới' }));
 
     fireEvent.change(screen.getByLabelText('Họ và tên'), {

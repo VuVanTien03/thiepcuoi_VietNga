@@ -41,7 +41,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
     primaryVenueTitle: 'TƯ GIA NHÀ GÁI',
     primaryVenueAddress: 'Thôn Đặng Xuyên, Xã Nguyễn Trãi, Tỉnh Hưng Yên',
     primaryVenueMapUrl:
-    'https://maps.google.com/?q=20.784556,106.074389',
+      'https://maps.google.com/?q=20.784556,106.074389',
     openingWarmNote:
       'Gửi đến bạn tấm thiệp cưới đầy yêu thương.\nNhững ai nhận được lời mời này đều là những người đặc biệt với bọn mình.\nMong bạn và gia đình sẽ đến chung vui,\nCùng chứng kiến khoảnh khắc hạnh phúc nhất của hai đứa.\nCảm ơn vì luôn bên cạnh và yêu thương.\nBọn mình rất mong được gặp bạn trong ngày vui này! 💚',
     bannerHeader: ['FALL IN', 'LOVE', 'WEDDING'],
@@ -97,8 +97,8 @@ export const WEDDING_CONFIG: WeddingConfig = {
     closingFeatureHeader: ['SWEET', 'WEDDING', 'INVITATION'],
     closingPoemBottom:
       '“Hết lần này đến lần khác, đem chuyện tình riêng khoe với thế gian,\nChỉ vì mỗi lần nhìn em, anh lại thấy đó là điều đáng tự hào nhất.”',
-    giftTitle: 'Hộp quà cưới',
-    giftModalTitle: 'Hộp Quà Yêu Thương',
+    giftTitle: 'Hộp quà bí mật',
+    giftModalTitle: 'Lì Xì Lời Cảm Ơn & Kỷ Niệm',
     feedDescription:
       'Thiệp mời cưới trực tuyến tông xanh lá nhẹ nhàng & hoa cúc trắng — Trân trọng kính mời bạn đến chung vui cùng Nguyễn Quốc Việt & Vũ Thị Thu Ngà ngày 26–27.12.2026 tại Hưng Yên.',
   },
@@ -133,7 +133,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
       mother: 'Bà Nguyễn Thị Thắng',
       address: 'Thôn Đặng Xuyên, Xã Nguyễn Trãi, Tỉnh Hưng Yên',
       mapUrl:
-      'https://maps.google.com/?q=20.784556,106.074389',
+        'https://maps.google.com/?q=20.784556,106.074389',
     },
   },
 
@@ -148,7 +148,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
       venueName: 'Tư Gia Nhà Gái',
       address: 'Thôn Đặng Xuyên, Xã Nguyễn Trãi, Tỉnh Hưng Yên',
       mapUrl:
-      'https://maps.google.com/?q=20.784556,106.074389',
+        'https://maps.google.com/?q=20.784556,106.074389',
       isoStart: '2026-12-26T16:30:00+07:00',
       isoEnd: '2026-12-26T19:30:00+07:00',
       accentIcon: 'wine',
@@ -163,7 +163,7 @@ export const WEDDING_CONFIG: WeddingConfig = {
       venueName: 'Tư Gia Nhà Gái',
       address: 'Thôn Đặng Xuyên, Xã Nguyễn Trãi, Tỉnh Hưng Yên',
       mapUrl:
-      'https://maps.google.com/?q=20.784556,106.074389',
+        'https://maps.google.com/?q=20.784556,106.074389',
       isoStart: '2026-12-27T12:05:00+07:00',
       isoEnd: '2026-12-27T14:00:00+07:00',
       accentIcon: 'rings',
@@ -254,6 +254,49 @@ export const WEDDING_CONFIG: WeddingConfig = {
       bankName: 'Techcombank',
       accountNumber: '19036888999001',
       qrNote: 'Chúc mừng hạnh phúc Quốc Việt & Thu Ngà',
+    },
+  ],
+
+  surpriseCards: [
+    {
+      id: 'surprise-1',
+      badge: 'Lời cảm ơn đặc biệt',
+      title: 'Cảm ơn vì đã luôn ở đây',
+      message:
+        'Dù đường xa hay bận rộn, sự hiện diện và lời chúc của bạn là món quà quý giá nhất với Quốc Việt & Thu Ngà trong ngày trọng đại này.',
+      imageUrl: '/images/wedding/garden-smile.jpg',
+    },
+    {
+      id: 'surprise-2',
+      badge: 'Khoảnh khắc hậu trường',
+      title: 'Cái nắm tay ngày chụp ảnh',
+      message:
+        'Phía sau những bức ảnh nghiêm túc là hai đứa cười không ngớt vì tạo dáng mãi vẫn thấy ngượng — nhưng chỉ cần nắm tay nhau là mọi thứ lại tự nhiên.',
+      imageUrl: '/images/wedding/uniform-hands.jpg',
+    },
+    {
+      id: 'surprise-3',
+      badge: 'Bí mật nho nhỏ',
+      title: 'Khoảnh khắc nói lời đồng ý',
+      message:
+        'Không cần kịch bản cầu kỳ, chỉ một lời hẹn chân thành giữa những ngày bình yên nhất — và cái gật đầu hạnh phúc đã đưa chúng mình tới ngày 27/12.',
+      imageUrl: '/images/wedding/banner-garden-smile.jpg',
+    },
+    {
+      id: 'surprise-4',
+      badge: 'Lời hẹn nhỏ',
+      title: 'Hẹn gặp bạn ở Hưng Yên',
+      message:
+        'Chúng mình đã chuẩn bị sẵn bữa tiệc ấm cúng lúc 16:30 ngày 26/12 và hôn lễ lúc 12:05 ngày 27/12 tại Tư gia Nhà Gái. Nhớ đến chung vui thật đông đủ nhé!',
+      imageUrl: '/images/wedding/uniform-formal-alt.jpg',
+    },
+    {
+      id: 'surprise-5',
+      badge: 'Kỷ niệm đáng nhớ',
+      title: 'Áo dài & nắng chiều',
+      message:
+        'Mỗi bức ảnh cưới là một kỷ niệm tụi mình cất giữ thật kỹ để sau này cùng xem lại và nhớ về những người thân yêu đã chúc phúc hôm nay.',
+      imageUrl: '/images/wedding/panorama-aodai-hands.jpg',
     },
   ],
 

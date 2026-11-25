@@ -1539,6 +1539,104 @@
   background: var(--sage-tint);
 }
 
+/* Surprise Thank-You & Secret Memory Card inside Gift Modal */
+.gift-surprise-card {
+  padding: 16px 16px 14px;
+  border-radius: 14px;
+  border: 1px solid #dce8da;
+  background: linear-gradient(180deg, #ffffff 0%, #f5faf3 100%);
+  text-align: center;
+  animation: surpriseCardPop 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gift-surprise-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--sage-tint);
+  border: 1px solid rgba(123, 154, 116, 0.25);
+  color: var(--sage-deep);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.gift-surprise-card__photo-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--paper-tint);
+  margin-bottom: 12px;
+  box-shadow: 0 8px 20px rgba(36, 48, 37, 0.1);
+}
+
+.gift-surprise-card__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 25%;
+}
+
+.gift-surprise-card__title {
+  margin: 0 0 6px;
+  font-family: var(--font-display-serif);
+  font-size: 18.5px;
+  font-weight: 600;
+  color: var(--ink-forest);
+}
+
+.gift-surprise-card__message {
+  margin: 0 0 10px;
+  font-size: 13.5px;
+  line-height: 1.62;
+  color: var(--ink-body);
+}
+
+.gift-surprise-card__sig {
+  margin: 0;
+  font-family: var(--font-script-vi);
+  font-size: 20px;
+  color: var(--sage-deep);
+}
+
+.gift-surprise-shuffle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  height: 40px;
+  margin-top: 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(123, 154, 116, 0.35);
+  background: var(--sage-deep);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(92, 123, 86, 0.22);
+  transition: filter 0.15s ease, transform 0.14s ease;
+}
+
+.gift-surprise-shuffle-btn:hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+@keyframes surpriseCardPop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* Directional GPU Scroll-Reveal Transitions (CineLove 54276) */
 .reveal-motion {
   opacity: 0;

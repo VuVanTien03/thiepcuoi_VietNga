@@ -1,35 +1,52 @@
-import React, { useState } from 'react';
-import { Check, Copy, X } from 'lucide-react';
-import { GiftAccount } from '../../types/wedding';
-import { SimpleQrSvg } from '../common/SimpleQrSvg';
+import React, { useEffect, useState } from 'react';
+import { Shuffle, Sparkles, X } from 'lucide-react';
+import { SurpriseCardItem } from '../../types/wedding';
 
 interface GiftModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  accounts: GiftAccount[];
+  cards: SurpriseCardItem[];
+  coupleSignature?: string;
 }
 
+function pickRandomCardIndex(total: number, excludeIndex: number | null): number {
+  if (total <= 1) return 0;
+  let next = Math.floor(Math.random() * total);
+  if (excludeIndex !== null && next === excludeIndex) {
+    next = (next + 1) % total;
+  }
+  return next;
+}
+
+/**
+ * Hộp Lì Xì Lời Cảm Ơn & Kỷ Niệm Bí Mật:
+ * Mỗi lần mở sẽ rút ngẫu nhiên một tấm thẻ nhỏ từ Quốc Việt & Thu Ngà.
+ */
 export const GiftModal: React.FC<GiftModalProps> = ({
   isOpen,
   onClose,
   title,
-  accounts,
+  cards,
+  coupleSignature = 'Quốc Việt & Thu Ngà',
 }) => {
-  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [cardIndex, setCardIndex] = useState(0);
+  const [drawCount, setDrawCount] = useState(0);
 
-  if (!isOpen) return null;
-
-  const handleCopy = async (acc: GiftAccount) => {
-    try {
-      await navigator.clipboard.writeText(acc.accountNumber);
-      setCopiedId(acc.id);
-      window.setTimeout(() => {
-        setCopiedId((prev) => (prev === acc.id ? null : prev));
-      }, 2200);
-    } catch {
-      // Fallback ignored if clipboard is restricted
+  useEffect(() => {
+    if (isOpen && cards.length > 0) {
+      setCardIndex((prev) => pickRandomCardIndex(cards.length, prev));
+      setDrawCount((c) => c + 1);
     }
+  }, [isOpen, cards.length]);
+
+  if (!isOpen || cards.length === 0) return null;
+
+  const activeCard = cards[cardIndex % cards.length];
+
+  const handleDrawAnother = () => {
+    setCardIndex((prev) => pickRandomCardIndex(cards.length, prev));
+    setDrawCount((c) => c + 1);
   };
 
   return (
@@ -55,48 +72,41 @@ export const GiftModal: React.FC<GiftModalProps> = ({
           </button>
         </div>
 
-        <p
-          style={{
-            margin: '0 0 16px',
-            fontSize: '13.5px',
-            lineHeight: 1.55,
-            color: 'var(--ink-muted)',
-          }}
+        <div
+          key={`${activeCard.id}-${drawCount}`}
+          className="gift-surprise-card"
+          data-testid="gift-surprise-card"
         >
-          Sự hiện diện của bạn là món quà quý giá nhất với chúng mình. Nếu không thể
-          tham dự trực tiếp, bạn có thể gửi lời chúc và quà mừng qua thông tin bên dưới.
-        </p>
+          <span className="gift-surprise-card__badge">
+            <Sparkles size={13} />
+            {activeCard.badge}
+          </span>
 
-        <div className="gift-account-cards">
-          {accounts.map((acc) => {
-            const copied = copiedId === acc.id;
-            return (
-              <div key={acc.id} className="gift-account-card">
-                <div className="gift-account-card__qr">
-                  <SimpleQrSvg
-                    seed={`${acc.bankName}:${acc.accountNumber}:${acc.ownerName}`}
-                    size={82}
-                    fgColor="#243025"
-                  />
-                </div>
-                <div>
-                  <div className="gift-account-card__role">{acc.ownerRole}</div>
-                  <div className="gift-account-card__bank">{acc.bankName}</div>
-                  <div className="gift-account-card__owner">{acc.ownerName}</div>
-                  <div className="gift-account-card__num">{acc.accountNumber}</div>
-                  <button
-                    type="button"
-                    className="gift-copy-btn"
-                    onClick={() => void handleCopy(acc)}
-                  >
-                    {copied ? <Check size={14} /> : <Copy size={14} />}
-                    {copied ? 'Đã sao chép STK' : 'Sao chép số tài khoản'}
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+          {activeCard.imageUrl && (
+            <div className="gift-surprise-card__photo-wrap">
+              <img
+                src={activeCard.imageUrl}
+                alt={activeCard.title}
+                className="gift-surprise-card__photo"
+              />
+            </div>
+          )}
+
+          <h4 className="gift-surprise-card__title">{activeCard.title}</h4>
+          <p className="gift-surprise-card__message">{activeCard.message}</p>
+          <p className="gift-surprise-card__sig">— {coupleSignature} —</p>
         </div>
+
+        {cards.length > 1 && (
+          <button
+            type="button"
+            className="gift-surprise-shuffle-btn"
+            onClick={handleDrawAnother}
+          >
+            <Shuffle size={15} />
+            Mở thẻ bất ngờ khác
+          </button>
+        )}
       </div>
     </div>
   );
